@@ -54,13 +54,15 @@ namespace Ships_Client.GameFlow.Scenes {
         public void Unload() { }
 
         public void Update() {
-            Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2, Console.WindowHeight / 2 + 4), loadingCircle[index]);
             counter++;
             counter = counter % 9;
-            if (counter == 0)
+            
+            if (counter == 0) {
                 index++;
-
-            index = index % loadingCircle.Length;
+                index = index % loadingCircle.Length;
+                
+                Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2, Console.WindowHeight / 2 + 4), loadingCircle[index]);
+            }
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
