@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Text;
-using System.Threading;
 using Ships_Client.States;
 using Ships_Common;
 using Ships_Common.Net;
