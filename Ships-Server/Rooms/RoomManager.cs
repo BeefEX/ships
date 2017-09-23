@@ -7,32 +7,39 @@ namespace Ships_Server.Rooms {
 
         private int id;
 
-        public readonly List<Room> rooms;
+        public readonly Dictionary<string, Room> rooms;
 
         public RoomManager() {
-            this.rooms = new List<Room>();
+            this.rooms = new Dictionary<string, Room>();
             id = 0;
         }
 
         public void createRoom(string name, string password, Client host) {
-            rooms.Add(new Room(id, host, name, password));
+            rooms.Add(id.ToString(), new Room(id, host, name, password));
             id++;
         }
 
-        public int findOpenRoom() {
-            foreach (Room room in rooms) {
-                if (room.open)
-                    return room.id;
+        public Room findRoomByID(string ID) {
+            if (!rooms.ContainsKey(ID))
+                return null;
+
+            return rooms[ID];
+        }
+
+        public string findOpenRoom() {
+            foreach (KeyValuePair<string, Room> room in rooms) {
+                if (room.Value.open)
+                    return room.Key;
             }
-            return -1;
+            return "";
         }
 
         public Room[] getOpenRooms() {
             List<Room> openRooms = new List<Room>();
             
-            foreach (Room room in rooms) {
-                if (room.open)
-                    openRooms.Add(room);
+            foreach (KeyValuePair<string, Room> room in rooms) {
+                if (room.Value.open)
+                    openRooms.Add(room.Value);
             }
             
             return openRooms.ToArray();

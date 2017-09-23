@@ -22,10 +22,13 @@ namespace Ships_Client.GameFlow.Scenes {
 
         private bool shouldRender;
         private List<Room> rooms;
+
+        private int selected;
         
         public void Start() {
             shouldRender = true;
             rooms = new List<Room>();
+            selected = 0;
             
             ConnectionState.client.OnMessage += message => {
                 Console.WriteLine(message);
@@ -70,13 +73,23 @@ namespace Ships_Client.GameFlow.Scenes {
             }
             
             for (int i = 0; i < maxRooms; i++) {
+                if (selected == i) {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
                 Console.SetCursorPosition(1, 6 + i);
                 Console.Write("|| " + rooms[i].name);
-                Console.SetCursorPosition(Console.WindowWidth - 14, 6 + i);
+                
+                for (int j = ("|| " + rooms[i].name).Length; j < Console.WindowWidth - 14; j++) {
+                    Console.Write(' ');                    
+                }
                 if (rooms[i].passwordProtected)
                     Console.Write("|   Yes    ||");
                 else
                     Console.Write("|   No     ||");
+                
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
             }
             
             Console.SetCursorPosition(1, 6 + maxRooms);
@@ -86,7 +99,26 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
-            
+            shouldRender = true;
+            if (key.Key == ConsoleKey.UpArrow || (key.Key == ConsoleKey.Tab && key.Modifiers == ConsoleModifiers.Control))
+                selected--;
+            else if (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.Tab)
+                selected++;
+            else
+                shouldRender = false;
+
+            selected = Math.Max(0, Math.Min(rooms.Count - 1, selected));
+
+            if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.Enter) {
+                RoomState.isHost = false;
+                RoomState.roomID = rooms[selected].id;
+                RoomState.roomName = rooms[selected].name;
+                
+                if (rooms[selected].passwordProtected)
+                    Program.game.SwitchScene("RoomLoginScene");
+                else
+                    Program.game.SwitchScene("RoomWaitingScene");
+            }
         }
     }
 }

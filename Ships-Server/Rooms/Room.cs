@@ -8,8 +8,8 @@ namespace Ships_Server.Rooms {
         public bool open { get; protected set; }
 
         public string name { get; protected set; }
-        protected string password;
-        
+        public string password { get; protected set; }
+
         protected Client host;
         protected Client client;
 

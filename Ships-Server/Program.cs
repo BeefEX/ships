@@ -40,6 +40,18 @@ namespace Ships_Server {
                             }
                             client.send(Packet.constructPacket("ls-rs", roomStrings));
                             break;
+                        case "jn":
+                            bool status = true;
+                            Room room = rooms.findRoomByID(packet[1]);
+                            if (!room.open)
+                                status = false;
+                            else if (room.password == packet[1]) {
+                                room.addClient(client);
+                            } else
+                                status = false;
+                            
+                            client.send(Packet.constructPacket("jn-rs", status.ToString()));
+                            break;
                         default:
                             Console.WriteLine("Unknown packet received.");
                             break;
