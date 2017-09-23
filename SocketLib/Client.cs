@@ -32,7 +32,6 @@ namespace SocketLib {
                 while (running) {
                     if (socket.Available > 0) {
                         bytes = socket.Receive(received, received.Length, 0);
-                        Console.Write("test");
                         message += Encoding.ASCII.GetString(received, 0, bytes);
 
                         if (message.Length != 0) {
