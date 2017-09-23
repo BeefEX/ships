@@ -15,6 +15,7 @@ namespace Ships_Client {
         public Dictionary<string, Scene> scenes;
         
         public Game() {
+            activeScene = "";
             scenes = new Dictionary<string, Scene>();
             init();
         }
@@ -35,7 +36,9 @@ namespace Ships_Client {
         }
 
         public void SwitchScene(string scene) {
-            scenes[activeScene].script.Unload();
+            if (scenes.ContainsKey(activeScene))
+                scenes[activeScene].script.Unload();
+            
             if (!scenes.ContainsKey(scene))
                 return;
             activeScene = scene;
