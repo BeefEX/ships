@@ -23,6 +23,7 @@ namespace Ships_Server {
             
             server = new ServerSocket(8080);
             server.OnClientConnected += client => {
+                client.send(Encoding.ASCII.GetBytes("ig~00000000"));
                 Console.WriteLine("Client connected");
                 client.OnMessage += message => {
                     
@@ -43,14 +44,17 @@ namespace Ships_Server {
                         case "jn":
                             bool status = true;
                             Room room = rooms.findRoomByID(packet[1]);
+                            
                             if (!room.open)
                                 status = false;
-                            else if (room.password == packet[1]) {
+                            else if (room.Authenticate(packet[2])) {
                                 room.addClient(client);
                             } else
                                 status = false;
                             
                             client.send(Packet.constructPacket("jn-rs", status.ToString()));
+                            break;
+                        case "ig": //ignore
                             break;
                         default:
                             Console.WriteLine("Unknown packet received.");

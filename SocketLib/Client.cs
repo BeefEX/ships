@@ -51,13 +51,6 @@ namespace SocketLib {
         }
 
         public int send(Byte[] message) {
-            if (message.Length < 11) {
-                byte[] tmp = message;
-                message = new byte[11];
-                for (int i = 0; i < tmp.Length; i++) {
-                    message[i] = tmp[i];
-                }
-            }
             return this.socket.Send(message);
         }
 

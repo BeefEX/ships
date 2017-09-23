@@ -1,4 +1,5 @@
-﻿using SocketLib;
+﻿using System;
+using SocketLib;
 
 namespace Ships_Server.Rooms {
     
@@ -22,7 +23,7 @@ namespace Ships_Server.Rooms {
         }
 
         public bool Authenticate(string password) {
-            return this.password == password;
+            return this.password.Equals(password);
         }
 
         public void addClient(Client client) {
@@ -31,7 +32,7 @@ namespace Ships_Server.Rooms {
         }
 
         public override string ToString() {
-            return id + "$" + name + "$" + (password != "");
+            return id + "$" + name + "$" + !password.Equals("");
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Ships_Client {
                 if (Console.KeyAvailable)
                     this.scenes[this.activeScene].script.KeyPressed(Console.ReadKey());
                 
-                Thread.Sleep(1000/20);
+                Thread.Sleep(1000/60);
             }
             return exitCode;
         }
