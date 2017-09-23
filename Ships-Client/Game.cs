@@ -24,6 +24,7 @@ namespace Ships_Client {
             this.addScene(new Scene("RoomSelectionScene", new RoomSelectionSceneScript()));
             this.addScene(new Scene("RoomCreationScene", new RoomCreationSceneScript()));
             this.addScene(new Scene("RoomWaitingScene", new RoomWaitingSceneScript()));
+            this.addScene(new Scene("RoomListScene", new RoomListSceneScript()));
             this.addScene(new Scene("GameScene", new GameSceneScript()));
             this.addScene(new Scene("ExitScene", new ExitSceneScript()));
         }

@@ -1,5 +1,7 @@
 ﻿using System;
+using Ships_Client.States;
 using Ships_Common;
+using Ships_Common.Net;
 
 namespace Ships_Client.GameFlow.Scenes {
     
@@ -36,6 +38,7 @@ namespace Ships_Client.GameFlow.Scenes {
         private int counter = 0;
         
         public void Start() {
+            ConnectionState.client.send(Packet.constructPacket("cr", RoomState.roomName, RoomState.roomPassword));
             string loadingString = "Waiting for an opponent to connect ...";
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);

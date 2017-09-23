@@ -46,6 +46,7 @@
     <Compile Include="GameFlow\Scenes\GameSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\MainMenuScript.cs" />
     <Compile Include="GameFlow\Scenes\RoomCreationSceneScript.cs" />
+    <Compile Include="GameFlow\Scenes\RoomListSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\RoomSelectionSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\RoomWaitingSceneScript.cs" />
     <Compile Include="Program.cs" />

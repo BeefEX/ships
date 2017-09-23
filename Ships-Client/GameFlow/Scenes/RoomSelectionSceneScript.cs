@@ -7,7 +7,7 @@ namespace Ships_Client.GameFlow.Scenes {
         
         private static List<Renderer.Option> options = new List<Renderer.Option> {
             new Renderer.Option("Host game", "RoomCreationScene"),
-            new Renderer.Option("Join game", "ExitScene")
+            new Renderer.Option("Join game", "RoomListScene")
         };
         
         private int selected = 0;
