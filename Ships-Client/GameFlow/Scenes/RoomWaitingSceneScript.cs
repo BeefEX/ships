@@ -63,6 +63,19 @@ namespace Ships_Client.GameFlow.Scenes {
                 Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
                 Console.Write(loadingString);
                 ConnectionState.client.OnMessage -= onMessage;
+            } else if (packet[0] == "jn-op") {
+                counter = 0;
+                index = 0;
+                
+                string loadingString = "Opponent connected";
+
+                RoomState.connected = true;
+                showLoader = false;
+                
+                Console.Clear();
+                Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+                Console.Write(loadingString);
+                ConnectionState.client.OnMessage -= onMessage;
             }
         }
         
@@ -80,6 +93,7 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.Write(loadingString);
             
             if (RoomState.isHost) {
+                ConnectionState.client.OnMessage += onMessage;
                 ConnectionState.client.send(Packet.constructPacket("cr", RoomState.roomName, RoomState.roomPassword));
             } else {
                 ConnectionState.client.OnMessage += onMessage;

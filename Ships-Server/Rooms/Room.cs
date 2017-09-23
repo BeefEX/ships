@@ -1,4 +1,5 @@
 ﻿using System;
+using Ships_Common.Net;
 using SocketLib;
 
 namespace Ships_Server.Rooms {
@@ -28,6 +29,7 @@ namespace Ships_Server.Rooms {
 
         public void addClient(Client client) {
             this.client = client;
+            this.host.send(Packet.constructPacket("jn-op", ""));
             this.open = false;
         }
 
