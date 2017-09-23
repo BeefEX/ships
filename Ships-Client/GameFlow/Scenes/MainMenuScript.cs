@@ -15,18 +15,15 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool shouldRender = true;
         private int selected = 0;
 
-        public void Start() {
-            
-        }
+        public void Start() { }
+
+        public void Unload() { }
 
         public void Update() {
             if (!shouldRender)
                 return;
             shouldRender = false;
-            Render();
-        }
-
-        private void Render() {
+            
             Console.Clear();
             Renderer.renderMenu(options, selected);
         }

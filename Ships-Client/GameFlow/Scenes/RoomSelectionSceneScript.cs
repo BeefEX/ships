@@ -22,6 +22,8 @@ namespace Ships_Client.GameFlow.Scenes {
             ConnectionState.Init();
         }
 
+        public void Unload() { }
+
         public void Update() {
             if (!shouldRender)
                 return;

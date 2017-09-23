@@ -7,6 +7,8 @@ namespace Ships_Client.GameFlow.Scenes {
             Program.game.Exit(0);
         }
 
+        public void Unload() { }
+
         public void Update() { }
 
         public void KeyPressed(ConsoleKeyInfo key) { }

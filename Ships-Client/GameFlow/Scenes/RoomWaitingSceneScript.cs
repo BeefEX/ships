@@ -51,6 +51,8 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.Write(loadingString);
         }
 
+        public void Unload() { }
+
         public void Update() {
             Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2, Console.WindowHeight / 2 + 4), loadingCircle[index]);
             counter++;

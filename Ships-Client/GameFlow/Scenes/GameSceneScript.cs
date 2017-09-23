@@ -7,6 +7,10 @@ namespace Ships_Client.GameFlow.Scenes {
             
         }
 
+        public void Unload() {
+            
+        }
+
         public void Update() {
             
         }

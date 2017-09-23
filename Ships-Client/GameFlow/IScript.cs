@@ -5,6 +5,8 @@ namespace Ships_Client {
 
         void Start();
 
+        void Unload();
+
         void Update();
 
         void KeyPressed(ConsoleKeyInfo key);
