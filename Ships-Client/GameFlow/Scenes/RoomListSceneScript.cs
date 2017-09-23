@@ -44,7 +44,9 @@ namespace Ships_Client.GameFlow.Scenes {
             ConnectionState.client.send(Packet.constructPacket("ls"));
         }
 
-        public void Unload() { }
+        public void Unload() {
+            shouldRender = true;
+        }
 
         public void Update() {
             if (!shouldRender)

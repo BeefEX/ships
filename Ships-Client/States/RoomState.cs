@@ -2,6 +2,8 @@
     
     public static class RoomState {
 
+        public static bool connected = false;
+        
         public static bool isHost = true;
 
         public static string roomID;

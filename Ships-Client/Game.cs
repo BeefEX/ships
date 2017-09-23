@@ -15,44 +15,45 @@ namespace Ships_Client {
         public Dictionary<string, Scene> scenes;
         
         public Game() {
-            this.scenes = new Dictionary<string, Scene>();
-            this.init();
+            scenes = new Dictionary<string, Scene>();
+            init();
         }
 
         protected void init() {
-            this.addScene(new Scene("MainMenu", new MainMenuScript()));
-            this.addScene(new Scene("RoomSelectionScene", new RoomSelectionSceneScript()));
-            this.addScene(new Scene("RoomCreationScene", new RoomCreationSceneScript()));
-            this.addScene(new Scene("RoomWaitingScene", new RoomWaitingSceneScript()));
-            this.addScene(new Scene("RoomLoginScene", new RoomLoginSceneScript()));
-            this.addScene(new Scene("RoomListScene", new RoomListSceneScript()));
-            this.addScene(new Scene("GameScene", new GameSceneScript()));
-            this.addScene(new Scene("ExitScene", new ExitSceneScript()));
+            addScene(new Scene("MainMenu", new MainMenuScript()));
+            addScene(new Scene("RoomSelectionScene", new RoomSelectionSceneScript()));
+            addScene(new Scene("RoomCreationScene", new RoomCreationSceneScript()));
+            addScene(new Scene("RoomWaitingScene", new RoomWaitingSceneScript()));
+            addScene(new Scene("RoomLoginScene", new RoomLoginSceneScript()));
+            addScene(new Scene("RoomListScene", new RoomListSceneScript()));
+            addScene(new Scene("GameScene", new GameSceneScript()));
+            addScene(new Scene("ExitScene", new ExitSceneScript()));
         }
 
         public void addScene(Scene scene) {
-            this.scenes.Add(scene.name, scene);
+            scenes.Add(scene.name, scene);
         }
 
         public void SwitchScene(string scene) {
-            if (!this.scenes.ContainsKey(scene))
+            scenes[activeScene].script.Unload();
+            if (!scenes.ContainsKey(scene))
                 return;
-            this.activeScene = scene;
-            this.scenes[scene].script.Start();
+            activeScene = scene;
+            scenes[scene].script.Start();
         }
 
-        public void Exit(int exitCode) {
-            this.shouldExit = true;
-            this.exitCode = exitCode;
+        public void Exit(int _exitCode) {
+            shouldExit = true;
+            exitCode = _exitCode;
         }
 
         public int Start(string scene) {
-            this.SwitchScene(scene);
+            SwitchScene(scene);
             while (!shouldExit) {
-                this.scenes[this.activeScene].script.Update();
+                scenes[activeScene].script.Update();
                 
                 if (Console.KeyAvailable)
-                    this.scenes[this.activeScene].script.KeyPressed(Console.ReadKey());
+                    scenes[activeScene].script.KeyPressed(Console.ReadKey());
                 
                 Thread.Sleep(1000/60);
             }

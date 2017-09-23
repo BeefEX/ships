@@ -17,7 +17,9 @@ namespace Ships_Client.GameFlow.Scenes {
 
         public void Start() { }
 
-        public void Unload() { }
+        public void Unload() {
+            shouldRender = true;
+        }
 
         public void Update() {
             if (!shouldRender)
