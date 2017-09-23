@@ -29,5 +29,9 @@ namespace Ships_Server.Rooms {
             this.client = client;
             this.open = false;
         }
+
+        public override string ToString() {
+            return id + "$" + name + "$" + (password != "");
+        }
     }
 }
