@@ -84,13 +84,13 @@ namespace Ships_Client.GameFlow.Scenes {
                 Console.SetCursorPosition(1, 6 + i);
                 Console.Write("|| " + rooms[i].name);
                 
-                for (int j = ("|| " + rooms[i].name).Length; j < Console.WindowWidth - 14; j++) {
+                for (int j = ("|| " + rooms[i].name).Length; j < Console.WindowWidth - 15; j++) {
                     Console.Write(' ');                    
                 }
                 if (rooms[i].passwordProtected)
-                    Console.Write("|   Yes   ||");
+                    Console.Write("|   Yes    ||");
                 else
-                    Console.Write("|   No    ||");
+                    Console.Write("|   No     ||");
                 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
