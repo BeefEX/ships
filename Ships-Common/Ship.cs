@@ -9,11 +9,13 @@ namespace Ships_Common {
 		public static class Parts {
 			public static char[,] PART_EXPLODED = {{'\\', '#', '/'}, {'@', '#', '@'}, {'/', '@', '\\'}};
 		}
-		
-        public static Ship SHIP_SMALL = new Ship(default(Vector2), new[] { new Vector2(0, 0) });
-        public static Ship SHIP_NORMAL = new Ship(default(Vector2), new[] { new Vector2(0, 0), new Vector2(0, -1) });
-        public static Ship SHIP_BIG = new Ship(default(Vector2), new[] { new Vector2(0, 1), new Vector2(0, 0), new Vector2(0, -1) });
-        public static Ship SHIP_PLANE = new Ship(default(Vector2), new[] { new Vector2(0, 1), new Vector2(0, 0), new Vector2(0, -1), new Vector2(1, 0) });
+
+	    public static Dictionary<string, Ship> defaultShips = new Dictionary<string, Ship> {
+		    {"SHIP_SMALL", new Ship(default(Vector2), new[] {new Vector2()})},
+		    {"SHIP_NORMAL", new Ship(default(Vector2), new[] {new Vector2(), new Vector2(0, -1)})},
+		    {"SHIP_BIG", new Ship(default(Vector2), new[] {new Vector2(0, 1), new Vector2(), new Vector2(0, -1)})},
+		    {"SHIP_HUGE", new Ship(default(Vector2), new[] {new Vector2(0, 1), new Vector2(), new Vector2(0, -1), new Vector2(0, -2)})}
+	    };
         
         public Vector2[] shape { get; private set; }
 
