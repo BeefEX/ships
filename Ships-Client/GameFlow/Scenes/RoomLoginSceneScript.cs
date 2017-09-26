@@ -42,9 +42,9 @@ namespace Ships_Client.GameFlow.Scenes {
                 selected++;
             else if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.Enter)
                 Program.game.SwitchScene(options[selected].scene);
-            else if (key.Key == ConsoleKey.Backspace)
+            else if (key.Key == ConsoleKey.Backspace && options[selected].scene == "")
                 options[selected].name = options[selected].name.Substring(0, options[selected].name.Length - 1);
-            else if (allowedChars.Contains(key.KeyChar.ToString()))
+            else if (allowedChars.Contains(key.KeyChar.ToString()) && options[selected].scene == "")
                 options[selected].name += key.KeyChar;
             else
                 shouldRender = false;
