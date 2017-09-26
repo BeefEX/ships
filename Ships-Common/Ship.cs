@@ -19,20 +19,20 @@ namespace Ships_Common {
 
 	    public bool[] hits { get; private set; }
 
-	    public Vector2 position { get; private set;  }
+	    public Vector2 position;
 
         protected Ship(Vector2 position, Vector2[] shape) {
             this.position = position;
             this.shape = shape;
-	        this.hits = new bool[this.shape.Length];
+	        hits = new bool[this.shape.Length];
         }
 
         public bool isHit(Vector2 pos) {
 	        bool hit = checkShape(pos);
 	        if (hit) {
 		        int index = 0;
-		        for (int i = 0; i < this.shape.Length; i++) {
-			        if (Equals(this.shape[i], this.position - pos)) {
+		        for (int i = 0; i < shape.Length; i++) {
+			        if (Equals(shape[i], position - pos)) {
 				        index = i;
 				        break;
 			        }
@@ -43,11 +43,11 @@ namespace Ships_Common {
         }
 
 	    public bool checkShape(Vector2 pos) {
-		    return this.shape.Contains(this.position - pos);
+		    return shape.Contains(pos - position);
 	    }
 
         public Ship Instantiate(Vector2 pos) {
-            return new Ship(pos, this.shape);
+            return new Ship(pos, shape);
         }
     }
 }
