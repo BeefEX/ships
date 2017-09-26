@@ -13,7 +13,7 @@ namespace Ships_Client.GameFlow.Scenes {
         public void Start() {
             wrongPosition = false;
             ships = new List<Ship>();
-            ships.Add(Ship.SHIP_BIG.Instantiate(new Vector2(1, 2)));
+            ships.Add(Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(1, 2)));
             shouldRender = true;
         }
 
@@ -62,17 +62,23 @@ namespace Ships_Client.GameFlow.Scenes {
                 delta.x += 1;
             if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
                 delta.x -= 1;
-            if (key.Key == ConsoleKey.Enter && !wrongPosition)
-                ships.Add(Ship.SHIP_PLANE.Instantiate(new Vector2(2, 2)));
-            
+            if (key.Key == ConsoleKey.Enter && !wrongPosition) {
+                if (ships.Count < Ship.defaultInventory.Length)
+                    ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(2, 2)));
+                else
+                    Program.game.SwitchScene("MainMenu");
+            }
+
             Ship selected = ships[ships.Count - 1];
             bool collides = false;
-   
-            Vector2 tmp = selected.position + delta;
-            
-            if (tmp.x < 2 || tmp.x > 12 || tmp.y < 2 || tmp.y > 12)
-                delta = new Vector2();
-            
+
+            foreach (Vector2 part in selected.shape) {
+                Vector2 tmp = selected.position + part + delta;
+                
+                if (tmp.x < 1 || tmp.x > 10 || tmp.y < 1 || tmp.y > 10)
+                    delta = new Vector2();
+            }
+
             for (int i = 0; i < ships.Count - 1; i++) {
                 foreach (Vector2 vector in selected.shape) {
                     if (ships[i].checkShape(selected.position + vector + delta)) {

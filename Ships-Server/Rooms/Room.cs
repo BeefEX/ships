@@ -30,8 +30,8 @@ namespace Ships_Server.Rooms {
 
         public void addClient(Client client) {
             this.client = client;
-            this.host.send(Packet.constructPacket("jn-op", ""));
-            this.open = false;
+            host.send(Packet.constructPacket("jn-op", ""));
+            open = false;
         }
 
         public override string ToString() {
