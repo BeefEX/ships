@@ -1,6 +1,6 @@
 ﻿namespace Ships_Server.Handlers {
     
-    public class Server {
+    public static class Server {
 
         private static void createRoom(Packet<string[]> packet) {
             packet.roomManager.createRoom(packet.data[0], packet.data[1], packet.client);

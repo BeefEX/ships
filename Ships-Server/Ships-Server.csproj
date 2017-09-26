@@ -46,6 +46,7 @@
     <Compile Include="Handlers\Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rooms\Game.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomManager.cs" />
   </ItemGroup>

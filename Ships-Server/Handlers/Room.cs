@@ -1,6 +1,13 @@
 ﻿namespace Ships_Server.Handlers {
     
-    public class Room {
-        
+    public static class Room {
+
+        private static void receiveShipPlacement(Packet<string[]> packet) {
+            
+        }
+
+        public static void Init() {
+            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler("rcsp", receiveShipPlacement));
+        }
     }
 }

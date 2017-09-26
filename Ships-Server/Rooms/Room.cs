@@ -14,6 +14,7 @@ namespace Ships_Server.Rooms {
 
         protected Client host;
         protected Client client;
+        protected Game game;
 
         public Room(int id, Client host, string name, string password) {
             open = true;
