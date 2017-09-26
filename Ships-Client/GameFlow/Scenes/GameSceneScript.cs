@@ -3,6 +3,8 @@
 namespace Ships_Client.GameFlow.Scenes {
     public class GameSceneScript : IScript {
         
+        
+        
         public void Start() {
             
         }

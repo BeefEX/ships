@@ -28,6 +28,7 @@ namespace Ships_Client {
             addScene(new Scene("RoomLoginScene", new RoomLoginSceneScript()));
             addScene(new Scene("RoomListScene", new RoomListSceneScript()));
             addScene(new Scene("GameScene", new GameSceneScript()));
+            addScene(new Scene("ShipPlacementScene", new ShipPlacementSceneScript()));
             addScene(new Scene("ExitScene", new ExitSceneScript()));
         }
 

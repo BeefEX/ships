@@ -116,7 +116,7 @@ namespace Ships_Client.GameFlow.Scenes {
                         loadingCircle[index]);
                 else if (index == 0) {
                     if (RoomState.connected)
-                        Program.game.SwitchScene("GameScene");
+                        Program.game.SwitchScene("ShipPlacementScene");
                     else
                         Program.game.SwitchScene("MainMenu");
                 }

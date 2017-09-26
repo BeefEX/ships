@@ -51,6 +51,7 @@
     <Compile Include="GameFlow\Scenes\RoomLoginSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\RoomSelectionSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\RoomWaitingSceneScript.cs" />
+    <Compile Include="GameFlow\Scenes\ShipPlacementSceneScript.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameFlow\IScript.cs" />
