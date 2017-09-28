@@ -49,51 +49,6 @@ namespace Ships_Client {
 			}
 		}
 		
-		public class Option {
-			public string label;
-			public string name;
-			public string scene;
-
-			public Option(string name, string scene, string label = null) {
-				this.name = name;
-				this.scene = scene;
-				this.label = label;
-			}
-		}
-
-		public static void renderMenu(List<Option> options, int selected) {
-			int middle = Console.WindowWidth / 2;
-
-			for (int i = 0; i < options.Count; i++) {
-				Option option = options[i];
-				int offset = options[i].name.Length / 2;
-				
-				if (option.label != default(string) && option.label != "") {
-					Console.SetCursorPosition(middle - offset - 4 - option.label.Length, Console.WindowHeight / 2 + 4 * i);
-					Console.Write(option.label);
-				}
-				
-				if (selected == i) {
-					Console.BackgroundColor = ConsoleColor.White;
-					Console.ForegroundColor = ConsoleColor.Black;
-				}
-                
-				Console.SetCursorPosition(middle - offset - 2, Console.WindowHeight / 2 + 4 * i - 1);
-				for (int j = 0; j < option.name.Length + 6; j++) {
-					Console.Write("=");
-				}
-
-				Console.SetCursorPosition(middle - offset - 2, Console.WindowHeight / 2 + 4 * i);
-				Console.Write("|| " + option.name + " ||");
-                
-				Console.SetCursorPosition(middle - offset - 2, Console.WindowHeight / 2 + 4 * i + 1);
-				for (int j = 0; j < option.name.Length + 6; j++) {
-					Console.Write("=");
-				}
-                
-				Console.BackgroundColor = ConsoleColor.Black;
-				Console.ForegroundColor = ConsoleColor.White;
-			}
-		}
+		
 	}
 }
