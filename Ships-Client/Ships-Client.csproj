@@ -58,6 +58,7 @@
     <Compile Include="GameFlow\Scene.cs" />
     <Compile Include="Rendering\Renderer.cs" />
     <Compile Include="States\ConnectionState.cs" />
+    <Compile Include="States\GameState.cs" />
     <Compile Include="States\RoomState.cs" />
   </ItemGroup>
   <ItemGroup>

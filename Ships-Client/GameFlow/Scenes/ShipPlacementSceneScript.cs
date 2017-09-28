@@ -5,6 +5,8 @@ using Ships_Common;
 namespace Ships_Client.GameFlow.Scenes {
     public class ShipPlacementSceneScript : IScript {
 
+        private static readonly Vector2[] offsets = { new Vector2(-1), new Vector2(1), new Vector2(0, -1), new Vector2(0, 1) };
+        
         private bool shouldRender;
 
         private List<Ship> ships;
@@ -64,7 +66,7 @@ namespace Ships_Client.GameFlow.Scenes {
                 delta.x -= 1;
             if (key.Key == ConsoleKey.Enter && !wrongPosition) {
                 if (ships.Count < Ship.defaultInventory.Length)
-                    ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(2, 2)));
+                    ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(5, 5)));
                 else
                     Program.game.SwitchScene("MainMenu");
             }
@@ -81,8 +83,10 @@ namespace Ships_Client.GameFlow.Scenes {
 
             for (int i = 0; i < ships.Count - 1; i++) {
                 foreach (Vector2 vector in selected.shape) {
-                    if (ships[i].checkShape(selected.position + vector + delta)) {
-                        collides = true;
+                    foreach (Vector2 offset in offsets) {
+                        if (ships[i].checkShape(selected.position + offset + vector + delta)) {
+                            collides = true;
+                        }
                     }
                 }
             }
