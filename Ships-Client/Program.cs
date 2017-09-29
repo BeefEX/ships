@@ -12,6 +12,9 @@ namespace Ships_Client {
         public static Game game;
         
         public static void Main(string[] args) {
+            Console.CursorVisible = false;
+            Console.Title = "Ships";
+            
             game = new Game();
             Environment.Exit(game.Start("MainMenu"));
         }

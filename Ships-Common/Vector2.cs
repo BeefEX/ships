@@ -29,12 +29,14 @@
             y /= other.y;
         }
 
-        public override bool Equals(object obj) {
-            if (obj is Vector2) {
-                Vector2 vec = (Vector2) obj;
-                return x == vec.x && y == vec.y;
+        public bool Equals(Vector2 other) {
+            return x.Equals(other.x) && y.Equals(other.y);
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                return (x.GetHashCode() * 397) ^ y.GetHashCode();
             }
-            return false;
         }
 
         public static Vector2 operator +(Vector2 a, Vector2 b) {
