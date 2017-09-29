@@ -14,8 +14,7 @@ namespace Ships_Client.GameFlow.Scenes {
         
         public void Start() {
             wrongPosition = false;
-            ships = new List<Ship>();
-            ships.Add(Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(1, 2)));
+            ships = new List<Ship> {Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(5, 5))};
             shouldRender = true;
         }
 
@@ -40,10 +39,7 @@ namespace Ships_Client.GameFlow.Scenes {
 
             for (int i = 0; i < ships.Count; i++) {
                 if (i == ships.Count - 1)
-                    if (wrongPosition)
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    else
-                        Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = wrongPosition ? ConsoleColor.Red : ConsoleColor.Green;
                 else
                     Console.ForegroundColor = ConsoleColor.White;
                 
@@ -64,6 +60,8 @@ namespace Ships_Client.GameFlow.Scenes {
                 delta.x += 1;
             if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
                 delta.x -= 1;
+            if (key.Key == ConsoleKey.R)
+                ships[ships.Count - 1].Rotate(90);
             if (key.Key == ConsoleKey.Enter && !wrongPosition) {
                 if (ships.Count < Ship.defaultInventory.Length)
                     ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(5, 5)));
