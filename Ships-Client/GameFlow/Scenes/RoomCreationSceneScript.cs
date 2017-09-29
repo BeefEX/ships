@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ships_Client.Rendering;
 using Ships_Client.States;
 
 namespace Ships_Client.GameFlow.Scenes {
@@ -8,53 +9,43 @@ namespace Ships_Client.GameFlow.Scenes {
 
         private static string allowedChars = "abcdefghijklmnopqrstuvwxyz123456789_-+*!#()& ";
 
-        private bool shouldRender = true;
+        private Menu menu;
         
-        private static List<Renderer.Option> options = new List<Renderer.Option> {
-            new Renderer.Option("", "", "Room name:"),
-            new Renderer.Option("", "", "Room password:"),
-            new Renderer.Option("Create", "RoomWaitingScene")
+        private static List<MenuOption> options = new List<MenuOption> {
+            new MenuOption("", "", "Room name:"),
+            new MenuOption("", "", "Room password:"),
+            new MenuOption("Create", "RoomWaitingScene")
         };
-
-        private int selected = 0;
         
         public void Start() {
-            
+            menu = new Menu(options);
         }
 
         public void Unload() {
-            shouldRender = true;
+            menu.Unload();
         }
 
         public void Update() {
-            if (!shouldRender)
-                return;
-            shouldRender = false;
-            Console.Clear();
-            Renderer.renderMenu(options, selected);
+            menu.Render();
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
+            menu.KeyPressed(key);
             
             RoomState.roomName = options[0].name;
             RoomState.roomPassword = options[1].name;
 
-            shouldRender = true;
+            bool shouldRender = true;
             
-            if (key.Key == ConsoleKey.UpArrow)
-                selected--;
-            else if (key.Key == ConsoleKey.DownArrow)
-                selected++;
-            else if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.Enter)
-                Program.game.SwitchScene(options[selected].scene);
-            else if (key.Key == ConsoleKey.Backspace && options[selected].scene == "")
-                options[selected].name = options[selected].name.Substring(0, options[selected].name.Length - 1);
-            else if (allowedChars.Contains(key.KeyChar.ToString()) && options[selected].scene == "")
-                options[selected].name += key.KeyChar;
+            if (key.Key == ConsoleKey.Backspace && options[menu.selected].scene == "")
+                options[menu.selected].name = options[menu.selected].name.Substring(0, options[menu.selected].name.Length - 1);
+            else if (allowedChars.Contains(key.KeyChar.ToString()) && options[menu.selected].scene == "")
+                options[menu.selected].name += key.KeyChar;
             else
                 shouldRender = false;
-            
-            selected = Math.Max(0, Math.Min(options.Count - 1, selected));
+
+            if (shouldRender)
+                menu.Render(true);
         }
     }
 }

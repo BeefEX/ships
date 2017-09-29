@@ -18,16 +18,15 @@ namespace Ships_Client.Rendering {
     public class Menu {
 
         protected List<MenuOption> options;
-        protected ColorScheme colorScheme;
 
         protected bool shouldRender;
 
-        protected int selected;
+        public int selected { get; protected set; }
         
-        public Menu(List<MenuOption> list, ColorScheme colorScheme = new ColorScheme(), int begin = 0) {
+        public Menu(List<MenuOption> list, int begin = 0) {
             options = list;
-            this.colorScheme = colorScheme;
             selected = begin;
+            shouldRender = true;
         }
         
         public void Render(bool force = false, bool clear = true) {
@@ -50,8 +49,8 @@ namespace Ships_Client.Rendering {
                 }
 				
                 if (selected == i) {
-                    Console.BackgroundColor = colorScheme.backgroundSelected;
-                    Console.ForegroundColor = colorScheme.foregroundSelected;
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
                 }
                 
                 Console.SetCursorPosition(middle - offset - 2, Console.WindowHeight / 2 + 4 * i - 1);
@@ -67,8 +66,8 @@ namespace Ships_Client.Rendering {
                     Console.Write("=");
                 }
                 
-                Console.BackgroundColor = colorScheme.background;
-                Console.ForegroundColor = colorScheme.foreground;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
