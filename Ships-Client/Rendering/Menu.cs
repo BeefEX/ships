@@ -77,9 +77,9 @@ namespace Ships_Client.Rendering {
         
         public void KeyPressed(ConsoleKeyInfo key) {
             shouldRender = true;
-            if (key.Key == ConsoleKey.UpArrow)
+            if (key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.Tab && key.Modifiers == ConsoleModifiers.Shift)
                 selected--;
-            else if (key.Key == ConsoleKey.DownArrow)
+            else if (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.Tab)
                 selected++;
             else
                 shouldRender = false;
