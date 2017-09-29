@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ships_Client.States;
 using Ships_Common;
 
 namespace Ships_Client.GameFlow.Scenes {
@@ -34,7 +35,7 @@ namespace Ships_Client.GameFlow.Scenes {
                 Console.SetCursorPosition(i + 1, 0);
                 Console.Write(i);
                 Console.SetCursorPosition(0, i + 1);
-                Console.Write(i);
+                Console.Write((char) (65 + i));
             }
 
             for (int i = 0; i < ships.Count; i++) {
@@ -65,8 +66,12 @@ namespace Ships_Client.GameFlow.Scenes {
             if (key.Key == ConsoleKey.Enter && !wrongPosition) {
                 if (ships.Count < Ship.defaultInventory.Length)
                     ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(5, 5)));
-                else
-                    Program.game.SwitchScene("MainMenu");
+                else {
+                    GameState.yourShips = ships;
+                    GameState.yourHits = new List<Hit>();
+                    GameState.opponentsHits = new List<Hit>();
+                    Program.game.SwitchScene("GameScene");
+                }
             }
 
             Ship selected = ships[ships.Count - 1];
