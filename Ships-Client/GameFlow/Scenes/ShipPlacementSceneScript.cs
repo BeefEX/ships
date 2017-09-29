@@ -91,7 +91,31 @@ namespace Ships_Client.GameFlow.Scenes {
             
             wrongPosition = collides;
             
-            ships[ships.Count - 1].position += delta;
+            selected.position += delta;
+
+            bool moving = true;
+            
+            while (moving) {
+                foreach (Vector2 part in selected.shape) {
+                    delta = new Vector2();
+                    Vector2 tmp = selected.position + part + delta;
+
+                    moving = true;
+                    
+                    if (tmp.x < 1)
+                        delta.x += 1;
+                    else if (tmp.x > 10)
+                        delta.x -= 1;
+                    else if (tmp.y < 1)
+                        delta.y += 1;
+                    else if (tmp.y > 10)
+                        delta.y -= 1;
+                    else
+                        moving = false;
+                    
+                    selected.position += delta;
+                }
+            }
         }
     }
 }
