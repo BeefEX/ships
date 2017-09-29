@@ -20,8 +20,8 @@ namespace Ships_Common {
 		    { "SHIP_HUGE", new Ship(default(Vector2), new[] { new Vector2(0, 1), new Vector2(), new Vector2(0, -1), new Vector2(0, -2) }) }
 	    };
 
-	    public Rotation rotation { get; private set; }
-
+	    public bool rotated { get; private set; }
+	    
 	    public Vector2[] shape { get; private set; }
 
 	    public bool[] hits { get; private set; }
@@ -32,7 +32,7 @@ namespace Ships_Common {
             this.position = position;
             this.shape = shape;
 	        hits = new bool[this.shape.Length];
-	        rotation = new Rotation(90);
+	        rotated = false;
         }
 
         public bool isHit(Vector2 pos) {
@@ -50,8 +50,13 @@ namespace Ships_Common {
 	        return hit;
         }
 
-	    public void Rotate(float degrees) {
-		    rotation.Rotate(degrees);
+	    public void Rotate() {
+		    rotated = !rotated;
+		    for (int i = 0; i < shape.Length; i++) {
+			    float tmp = shape[i].x;
+			    shape[i].x = shape[i].y;
+			    shape[i].y = tmp;
+		    }
 	    }
 
 	    public bool checkShape(Vector2 pos) {
@@ -59,7 +64,7 @@ namespace Ships_Common {
 	    }
 
         public Ship Instantiate(Vector2 pos) {
-            return new Ship(pos, shape);
+            return new Ship(pos, (Vector2[]) shape.Clone());
         }
     }
 }

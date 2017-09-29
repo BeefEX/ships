@@ -14,7 +14,7 @@ namespace Ships_Client {
 			Vector2 pos = ship.position;
 			
 			for (int i = 0; i < ship.shape.Length; i++) {
-				Vector2 vector = pos + ship.shape[i] * ship.rotation;
+				Vector2 vector = pos + ship.shape[i];
 				
 				if (ship.hits[i])
 					drawPixel(vector, 'X');//drawPatternAsPixel(vector, Ship.Parts.PART_EXPLODED);

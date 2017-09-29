@@ -61,7 +61,7 @@ namespace Ships_Client.GameFlow.Scenes {
             if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
                 delta.x -= 1;
             if (key.Key == ConsoleKey.R)
-                ships[ships.Count - 1].Rotate(90);
+                ships[ships.Count - 1].Rotate();
             if (key.Key == ConsoleKey.Enter && !wrongPosition) {
                 if (ships.Count < Ship.defaultInventory.Length)
                     ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(5, 5)));
