@@ -7,11 +7,11 @@ namespace Ships_Client {
 	
 	public static class Renderer {
 		
-		public static void renderShip (Ship ship) {
+		public static void renderShip (Ship ship, Vector2 offset = new Vector2()) {
 			if (ship == default(Ship))
 				return;
 
-			Vector2 pos = ship.position;
+			Vector2 pos = ship.position + offset;
 			
 			for (int i = 0; i < ship.shape.Length; i++) {
 				Vector2 vector = pos + ship.shape[i];
