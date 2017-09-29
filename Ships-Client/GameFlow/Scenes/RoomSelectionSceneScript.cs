@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using Ships_Client.Rendering;
 using Ships_Client.States;
 
@@ -7,6 +8,9 @@ namespace Ships_Client.GameFlow.Scenes {
     public class RoomSelectionSceneScript : IScript {
 
         private Menu menu;
+
+        private bool connected;
+        private int counter = 60;
         
         private static List<MenuOption> options = new List<MenuOption> {
             new MenuOption("Host game", "RoomCreationScene"),
@@ -18,8 +22,16 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
-            ConnectionState.Init();
-            
+            try {
+                ConnectionState.Init();
+                connected = true;
+            } catch (SocketException e) {
+                loadingString = "Connection failed.";
+                Console.Clear();
+                Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+                Console.Write(loadingString);
+            }
+
             menu = new Menu(options);
         }
 
@@ -28,7 +40,13 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         public void Update() {
-            menu.Render();
+            if (connected)
+                menu.Render();
+            else {
+                counter--;
+                if (counter <= 0)
+                    Program.game.SwitchScene("MainMenu");
+            }
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
