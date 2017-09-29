@@ -34,17 +34,17 @@ namespace Ships_Client {
 				}
 			}
 			*/
-			Console.SetCursorPosition(position.x, position.y);
+			Console.SetCursorPosition((int)position.x, (int)position.y);
 			Console.Write(character);
 		}
 		
 		public static void drawPatternAsPixel (Vector2 position, char[,] pattern) {
-			for (int x = position.x - 1; x <= position.x + 1; x++) {
-				for (int y = position.y - 1; y <= position.y + 1; y++) {
+			for (int x = (int)position.x - 1; x <= position.x + 1; x++) {
+				for (int y = (int)position.y - 1; y <= position.y + 1; y++) {
 					if (x < 0 || y < 0 || x > Console.WindowWidth || y > Console.WindowHeight)
 						continue;
 					Console.SetCursorPosition(x, y);
-					Console.Write(pattern[1 - (y - position.y), 1 + (x - position.x)]);
+					Console.Write(pattern[1 - (y - (int)position.y), 1 + (x - (int)position.x)]);
 				}
 			}
 		}
