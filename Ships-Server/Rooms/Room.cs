@@ -1,5 +1,4 @@
-﻿using System;
-using Ships_Common.Net;
+﻿using Ships_Common.Net;
 using SocketLib;
 
 namespace Ships_Server.Rooms {
@@ -22,20 +21,32 @@ namespace Ships_Server.Rooms {
             this.host = host;
             this.name = name;
             this.password = password;
+
+            host.OnDisconnect += OnHostDisconnect;
         }
 
-        public bool Authenticate(string password) {
-            return this.password.Equals(password);
+        public bool Authenticate(string _password) {
+            return password.Equals(_password);
         }
 
-        public void addClient(Client client) {
-            this.client = client;
+        public void addClient(Client _client) {
+            client = _client;
             host.send(Packet.constructPacket("jn-op", ""));
+            _client.OnDisconnect += OnOpponentDisconnect;
             open = false;
         }
 
         public override string ToString() {
             return id + "$" + name + "$" + !password.Equals("");
+        }
+
+        private void OnHostDisconnect() {
+            if (client != null)
+                client.send(Packet.constructPacket("dc-op", ""));
+        }
+        
+        private void OnOpponentDisconnect() {
+            host.send(Packet.constructPacket("dc-op", ""));
         }
     }
 }
