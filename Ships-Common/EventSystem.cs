@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ships_Server {
+namespace Ships_Common {
     
     public class EventSystem<T> {
 

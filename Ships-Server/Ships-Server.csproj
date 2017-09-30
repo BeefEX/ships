@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventSystem.cs" />
     <Compile Include="Handlers\Room.cs" />
     <Compile Include="Handlers\Server.cs" />
     <Compile Include="Program.cs" />
