@@ -40,7 +40,7 @@ namespace Ships_Client.GameFlow.Scenes {
         private int counter;
 
         private void onMessage(string message) {
-            string[] packet = Packet.readPacket(Encoding.ASCII.GetBytes(message));
+            string[] packet = PacketUtils.readPacket(Encoding.ASCII.GetBytes(message));
 
             if (packet[0] == "jn-rs") {
                 counter = 0;
@@ -92,10 +92,10 @@ namespace Ships_Client.GameFlow.Scenes {
             
             if (RoomState.isHost) {
                 ConnectionState.client.OnMessage += onMessage;
-                ConnectionState.client.send(Packet.constructPacket("cr", RoomState.roomName, RoomState.roomPassword));
+                ConnectionState.client.send(PacketUtils.constructPacket("cr", RoomState.roomName, RoomState.roomPassword));
             } else {
                 ConnectionState.client.OnMessage += onMessage;
-                ConnectionState.client.send(Packet.constructPacket("jn", RoomState.roomID, RoomState.roomPassword));
+                ConnectionState.client.send(PacketUtils.constructPacket("jn", RoomState.roomID, RoomState.roomPassword));
             }
         }
 

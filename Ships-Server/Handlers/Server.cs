@@ -14,7 +14,7 @@ namespace Ships_Server.Handlers {
             for (int i = 0; i < roomStrings.Length; i++) {
                 roomStrings[i] = roomArray[i].ToString();
             }
-            packet.client.send(Ships_Common.Net.Packet.constructPacket("ls-rs", roomStrings));
+            packet.client.send(Ships_Common.Net.PacketUtils.constructPacket("ls-rs", roomStrings));
         }
 
         private static void joinRoom(Packet<string[]> packet) {
@@ -28,7 +28,7 @@ namespace Ships_Server.Handlers {
             } else
                 status = false;
                             
-            packet.client.send(Ships_Common.Net.Packet.constructPacket("jn-rs", status.ToString()));
+            packet.client.send(Ships_Common.Net.PacketUtils.constructPacket("jn-rs", status.ToString()));
         }
         
         public static void Init () {

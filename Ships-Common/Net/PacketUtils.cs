@@ -2,7 +2,7 @@
 
 namespace Ships_Common.Net {
     
-    public class Packet {    
+    public class PacketUtils {    
         
         public static string[] readPacket(byte[] packet) {
             return Encoding.ASCII.GetString(packet).Split('~');
@@ -11,5 +11,10 @@ namespace Ships_Common.Net {
         public static byte[] constructPacket(string packetName, params string[] data) {
             return Encoding.ASCII.GetBytes(packetName + "~" + string.Join("~", data));
         }
+    }
+
+    public class PacketHandler : EventSystem<string[]>.Handler {
+        public PacketHandler(Packets packet, EventSystem<string[]>.OnTrigger handler) :
+            base(packet.ToString(), handler) { }
     }
 }

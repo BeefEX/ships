@@ -53,7 +53,7 @@ namespace Ships_Server {
                 Console.WriteLine("Client connected");
                 
                 client.OnMessage += message => {
-                    string[] packet = Packet.readPacket(Encoding.ASCII.GetBytes(message));
+                    string[] packet = PacketUtils.readPacket(Encoding.ASCII.GetBytes(message));
                     
                     Console.WriteLine("Received => " + message);
                     

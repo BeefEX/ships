@@ -32,7 +32,7 @@ namespace Ships_Client.GameFlow.Scenes {
             
             ConnectionState.client.OnMessage += message => {
                 Console.WriteLine(message);
-                string[] packet = Packet.readPacket(Encoding.ASCII.GetBytes(message));
+                string[] packet = PacketUtils.readPacket(Encoding.ASCII.GetBytes(message));
                 if (packet[0] == "ls-rs") {
                     for (int i = 1; i < packet.Length; i++) {
                         string[] room = packet[i].Split('$');
@@ -41,7 +41,7 @@ namespace Ships_Client.GameFlow.Scenes {
                     shouldRender = true;
                 }
             };
-            ConnectionState.client.send(Packet.constructPacket("ls"));
+            ConnectionState.client.send(PacketUtils.constructPacket("ls"));
         }
 
         public void Unload() {

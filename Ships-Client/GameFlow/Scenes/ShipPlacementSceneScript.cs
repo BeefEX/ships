@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ships_Client.States;
 using Ships_Common;
+using Ships_Common.Net;
 
 namespace Ships_Client.GameFlow.Scenes {
     public class ShipPlacementSceneScript : IScript {
@@ -17,8 +18,8 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool wrongPosition;
         
         public void Start() {
-            ConnectionState.OnMessage.addTrigger(new EventSystem<Packet<string[]>>.Handler("sh-ls", OnShipListReceived));
-            ConnectionState.Send(Encoding.ASCII.GetBytes("rq-shls"));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.REQUEST_SHIP_LIST, OnShipListReceived));
+            ConnectionState.Send(Encoding.ASCII.GetBytes("requestShipList"));
             
             ships = new List<Ship> {Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(5, 5))};
             
@@ -55,7 +56,7 @@ namespace Ships_Client.GameFlow.Scenes {
             }
         }
 
-        private void OnShipListReceived(Packet<string[]> message) {
+        private void OnShipListReceived(string[] message) {
             
         }
 

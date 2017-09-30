@@ -29,7 +29,7 @@ namespace Ships_Common {
         
         public delegate void OnTrigger(T data);
 
-        public struct Handler {
+        public class Handler {
             public readonly string trigger;
             public readonly OnTrigger handler;
 
