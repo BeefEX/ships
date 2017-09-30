@@ -86,9 +86,9 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.Write(loadingString);
             
             if (RoomState.isHost)
-                ConnectionState.client.send(PacketUtils.constructPacket(Packets.CREATE_ROOM.ToString(), RoomState.roomName, RoomState.roomPassword));
+                ConnectionState.Send(PacketUtils.constructPacket(Packets.CREATE_ROOM.ToString(), RoomState.roomName, RoomState.roomPassword));
             else
-                ConnectionState.client.send(PacketUtils.constructPacket(Packets.JOIN_ROOM.ToString(), RoomState.roomID, RoomState.roomPassword));
+                ConnectionState.Send(PacketUtils.constructPacket(Packets.JOIN_ROOM.ToString(), RoomState.roomID, RoomState.roomPassword));
             
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_JOINED, OnOpponentJoined));
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.JOIN_ROOM, OnJoin));

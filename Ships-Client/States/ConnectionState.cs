@@ -18,7 +18,7 @@ namespace Ships_Client.States {
         public static void Init() {
             OnMessage = new EventSystem<string[]>();
             client = new Client(new TcpClient("localhost", 8080).Client);
-            client.send(Encoding.ASCII.GetBytes("ig~00000000"));
+            Send(Encoding.ASCII.GetBytes("ig~00000000"));
             
             client.OnMessage += message => {
                 string[] split = message.Split('~');

@@ -39,7 +39,7 @@ namespace Ships_Client.GameFlow.Scenes {
             selected = 0;
             
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.ROOM_LIST, OnRoomListReceived));
-            ConnectionState.client.send(PacketUtils.constructPacket(Packets.ROOM_LIST.ToString()));
+            ConnectionState.Send(PacketUtils.constructPacket(Packets.ROOM_LIST.ToString()));
         }
 
         public void Unload() {
