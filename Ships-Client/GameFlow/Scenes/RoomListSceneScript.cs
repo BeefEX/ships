@@ -24,24 +24,22 @@ namespace Ships_Client.GameFlow.Scenes {
         private List<Room> rooms;
 
         private int selected;
+
+        private void OnRoomListReceived(string[] packet) {
+            for (int i = 1; i < packet.Length; i++) {
+                string[] room = packet[i].Split('$');
+                rooms.Add(new Room(room[1], room[0], Boolean.Parse(room[2])));
+            }
+            shouldRender = true;
+        }
         
         public void Start() {
             shouldRender = true;
             rooms = new List<Room>();
             selected = 0;
             
-            ConnectionState.client.OnMessage += message => {
-                Console.WriteLine(message);
-                string[] packet = PacketUtils.readPacket(Encoding.ASCII.GetBytes(message));
-                if (packet[0] == "ls-rs") {
-                    for (int i = 1; i < packet.Length; i++) {
-                        string[] room = packet[i].Split('$');
-                        rooms.Add(new Room(room[1], room[0], Boolean.Parse(room[2])));
-                    }
-                    shouldRender = true;
-                }
-            };
-            ConnectionState.client.send(PacketUtils.constructPacket("ls"));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.ROOM_LIST, OnRoomListReceived));
+            ConnectionState.client.send(PacketUtils.constructPacket(Packets.ROOM_LIST.ToString()));
         }
 
         public void Unload() {

@@ -1,4 +1,5 @@
 ﻿using Ships_Common;
+using Ships_Common.Net;
 
 namespace Ships_Server.Handlers {
     
@@ -8,13 +9,15 @@ namespace Ships_Server.Handlers {
             packet.roomManager.createRoom(packet.data[0], packet.data[1], packet.client);
         }
 
-        private static void listRooms(Packet<string[]> packet) {
+        private static void listRooms(Packet<string[]> packet) {            
             Rooms.Room[] roomArray = packet.roomManager.getOpenRooms();
+            
             string[] roomStrings = new string[roomArray.Length];
             for (int i = 0; i < roomStrings.Length; i++) {
                 roomStrings[i] = roomArray[i].ToString();
             }
-            packet.client.send(Ships_Common.Net.PacketUtils.constructPacket("ls-rs", roomStrings));
+            
+            packet.client.send(PacketUtils.constructPacket(Packets.ROOM_LIST.ToString(), roomStrings));
         }
 
         private static void joinRoom(Packet<string[]> packet) {
@@ -28,13 +31,13 @@ namespace Ships_Server.Handlers {
             } else
                 status = false;
                             
-            packet.client.send(Ships_Common.Net.PacketUtils.constructPacket("jn-rs", status.ToString()));
+            packet.client.send(PacketUtils.constructPacket(Packets.JOIN_ROOM.ToString(), status.ToString()));
         }
         
         public static void Init () {
-            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler("cr", createRoom));
-            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler("ls", listRooms));
-            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler("jn", joinRoom));
+            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler(Packets.CREATE_ROOM.ToString(), createRoom));
+            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler(Packets.ROOM_LIST.ToString(), listRooms));
+            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler(Packets.JOIN_ROOM.ToString(), joinRoom));
         }
     }
 }

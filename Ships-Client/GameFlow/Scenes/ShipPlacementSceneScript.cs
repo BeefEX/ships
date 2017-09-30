@@ -18,8 +18,8 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool wrongPosition;
         
         public void Start() {
-            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.REQUEST_SHIP_LIST, OnShipListReceived));
-            ConnectionState.Send(Encoding.ASCII.GetBytes("requestShipList"));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.SHIP_LIST, OnShipListReceived));
+            ConnectionState.Send(Encoding.ASCII.GetBytes(Packets.SHIP_LIST.ToString()));
             
             ships = new List<Ship> {Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(5, 5))};
             

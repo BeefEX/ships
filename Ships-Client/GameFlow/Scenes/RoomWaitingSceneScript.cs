@@ -39,69 +39,62 @@ namespace Ships_Client.GameFlow.Scenes {
         private int index;
         private int counter;
 
-        private void onMessage(string message) {
-            string[] packet = PacketUtils.readPacket(Encoding.ASCII.GetBytes(message));
-
-            if (packet[0] == "jn-rs") {
-                counter = 0;
-                index = 0;
+        private void OnOpponentJoined(string[] packet) {
+            counter = 0;
+            index = 0;
                 
-                string loadingString;
+            string loadingString;
                 
-                if (packet[1] == "True") {
-                    RoomState.connected = true;
-                    showLoader = false;
-                    loadingString = "Succesfully connected";
-                } else {
-                    showLoader = false;
-                    loadingString = "Failed to connect (maybe wrong password)";
-                }
-                
-                Console.Clear();
-                Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
-                Console.Write(loadingString);
-                ConnectionState.client.OnMessage -= onMessage;
-            } else if (packet[0] == "jn-op") {
-                counter = 0;
-                index = 0;
-                
-                string loadingString = "Opponent connected";
-
+            if (packet[1] == "True") {
                 RoomState.connected = true;
                 showLoader = false;
-                
-                Console.Clear();
-                Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
-                Console.Write(loadingString);
-                ConnectionState.client.OnMessage -= onMessage;
+                loadingString = "Succesfully connected";
+            } else {
+                showLoader = false;
+                loadingString = "Failed to connect (maybe wrong password)";
             }
+                
+            Console.Clear();
+            Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+            Console.Write(loadingString);
+        }
+
+        private void OnJoin(string[] packet) {
+            counter = 0;
+            index = 0;
+                
+            string loadingString = "Opponent connected";
+
+            RoomState.connected = true;
+            showLoader = false;
+                
+            Console.Clear();
+            Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+            Console.Write(loadingString);            
         }
         
         public void Start() {
             string loadingString;
             
-            if (RoomState.isHost) {
+            if (RoomState.isHost)
                 loadingString = "Waiting for an opponent to connect ...";
-            } else {
+            else
                 loadingString = "Joining the selected room ...";
-            }
             
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
             
-            if (RoomState.isHost) {
-                ConnectionState.client.OnMessage += onMessage;
-                ConnectionState.client.send(PacketUtils.constructPacket("cr", RoomState.roomName, RoomState.roomPassword));
-            } else {
-                ConnectionState.client.OnMessage += onMessage;
-                ConnectionState.client.send(PacketUtils.constructPacket("jn", RoomState.roomID, RoomState.roomPassword));
-            }
+            if (RoomState.isHost)
+                ConnectionState.client.send(PacketUtils.constructPacket(Packets.CREATE_ROOM.ToString(), RoomState.roomName, RoomState.roomPassword));
+            else
+                ConnectionState.client.send(PacketUtils.constructPacket(Packets.JOIN_ROOM.ToString(), RoomState.roomID, RoomState.roomPassword));
+            
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_JOINED, OnOpponentJoined));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.JOIN_ROOM, OnJoin));
         }
 
-        public void Unload() {
-            ConnectionState.client.OnMessage -= onMessage;
-        }
+        public void Unload() { }
 
         public void Update() {
             counter++;
@@ -112,7 +105,7 @@ namespace Ships_Client.GameFlow.Scenes {
                 index = index % loadingCircle.Length;
 
                 if (showLoader)
-                    Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2, Console.WindowHeight / 2 + 4),
+                    Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4),
                         loadingCircle[index]);
                 else if (index == 0) {
                     if (RoomState.connected)

@@ -1,4 +1,5 @@
 ﻿using Ships_Common;
+using Ships_Common.Net;
 
 namespace Ships_Server.Handlers {
     
@@ -9,7 +10,7 @@ namespace Ships_Server.Handlers {
         }
 
         public static void Init() {
-            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler("rcsp", receiveShipPlacement));
+            Program.eventSystem.addTrigger(new EventSystem<Packet<string[]>>.Handler(Packets.SUBMIT_SHIP_POSITIONS.ToString(), receiveShipPlacement));
         }
     }
 }

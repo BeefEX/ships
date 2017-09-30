@@ -31,7 +31,7 @@ namespace Ships_Server.Rooms {
 
         public void addClient(Client _client) {
             client = _client;
-            host.send(PacketUtils.constructPacket("jn-op", ""));
+            host.send(PacketUtils.constructPacket(Packets.OPPONENT_JOINED.ToString(), ""));
             _client.OnDisconnect += OnOpponentDisconnect;
             open = false;
         }
@@ -42,11 +42,11 @@ namespace Ships_Server.Rooms {
 
         private void OnHostDisconnect() {
             if (client != null)
-                client.send(PacketUtils.constructPacket("dc-op", ""));
+                client.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
         }
         
         private void OnOpponentDisconnect() {
-            host.send(PacketUtils.constructPacket("dc-op", ""));
+            host.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
         }
     }
 }
