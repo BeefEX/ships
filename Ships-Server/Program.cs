@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ships_Common;
 using Ships_Common.Net;
 using Ships_Server.Handlers;
 using Ships_Server.Rooms;
@@ -32,9 +33,15 @@ namespace Ships_Server {
             Server.Init();
             
             new Task (() => {
-                string line = Console.ReadLine();
-                if (line == "close" || line == "exit")
-                    server.close();
+                while (true) {
+                    string line = Console.ReadLine();
+                    if (line == "close" || line == "exit") {
+                        server.close();
+                        return;
+                    }
+                    if (line == "test")
+                        Console.WriteLine(Ship.defaultShips["SHIP_HUGE"].Instantiate(new Vector2(10, 10)));
+                }
             }).Start();
             
             rooms = new RoomManager();
