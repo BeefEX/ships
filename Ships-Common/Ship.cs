@@ -20,7 +20,7 @@ namespace Ships_Common {
 	    
 	    #endregion
 
-	    #region Variables
+	    #region Members
 	    
 	    public bool rotated { get; private set; }
 	    

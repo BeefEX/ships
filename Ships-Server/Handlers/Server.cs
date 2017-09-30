@@ -1,4 +1,6 @@
-﻿namespace Ships_Server.Handlers {
+﻿using Ships_Common;
+
+namespace Ships_Server.Handlers {
     
     public static class Server {
 

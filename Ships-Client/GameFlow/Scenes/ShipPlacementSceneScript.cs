@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Ships_Client.States;
 using Ships_Common;
 
@@ -7,6 +8,8 @@ namespace Ships_Client.GameFlow.Scenes {
     public class ShipPlacementSceneScript : IScript {
 
         private static readonly Vector2[] offsets = { new Vector2(-1), new Vector2(1), new Vector2(0, -1), new Vector2(0, 1) };
+
+        private Ship[] _ships;
         
         private bool shouldRender;
 
@@ -14,8 +17,12 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool wrongPosition;
         
         public void Start() {
-            wrongPosition = false;
+            ConnectionState.OnMessage.addTrigger(new EventSystem<Packet<string[]>>.Handler("sh-ls", OnShipListReceived));
+            ConnectionState.Send(Encoding.ASCII.GetBytes("rq-shls"));
+            
             ships = new List<Ship> {Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(5, 5))};
+            
+            wrongPosition = false;
             shouldRender = true;
         }
 
@@ -46,6 +53,10 @@ namespace Ships_Client.GameFlow.Scenes {
                 
                 Renderer.renderShip(ships[i]);
             }
+        }
+
+        private void OnShipListReceived(Packet<string[]> message) {
+            
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
