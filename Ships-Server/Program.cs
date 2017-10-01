@@ -34,13 +34,25 @@ namespace Ships_Server {
             
             new Task (() => {
                 while (true) {
-                    string line = Console.ReadLine();
-                    if (line == "close" || line == "exit") {
+                    var readLine = Console.ReadLine();
+                    if (readLine == null)
+                        continue;
+                        
+                    string[] command = readLine.Split(' ');
+                    if (command[0] == "close" || command[0] == "exit") {
                         server.close();
                         return;
                     }
-                    if (line == "test")
-                        Console.WriteLine(Ship.defaultShips["SHIP_HUGE"].Instantiate(new Vector2(10, 10)));
+
+                    if (command[0] == "netDebug") {
+                        server.clients.ForEach(client => {
+                            bool enable = bool.Parse(command[1]);
+                            if (enable && !client.debugEnabled)
+                                client.enableDebug();
+                            else if (!enable && client.debugEnabled)
+                                client.disableDebug();
+                        });
+                    }
                 }
             }).Start();
             
