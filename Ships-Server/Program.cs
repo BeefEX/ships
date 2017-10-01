@@ -31,6 +31,7 @@ namespace Ships_Server {
         public static void Main(string[] args) {
             eventSystem = new EventSystem<Packet<string[]>>();
             Server.Init();
+            Handlers.Room.Init();
             
             new Task (() => {
                 while (true) {
@@ -53,6 +54,9 @@ namespace Ships_Server {
                                 client.disableDebug();
                         });
                     }
+                    
+                    if (command[0] == "shipSer")
+                        Console.WriteLine(Ship.defaultShips["SHIP_HUGE"].Instantiate(new Vector2(10, 10)));
                 }
             }).Start();
             

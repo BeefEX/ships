@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Ships_Client.States;
 using Ships_Common;
@@ -18,10 +19,16 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool wrongPosition;
         
         public void Start() {
+            ships = new List<Ship>();
+            
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.SHIP_LIST, OnShipListReceived));
             ConnectionState.Send(Encoding.ASCII.GetBytes(Packets.SHIP_LIST.ToString()));
             
-            ships = new List<Ship> {Ship.defaultShips[Ship.defaultInventory[0]].Instantiate(new Vector2(5, 5))};
+            string loadingString = "Fetching ship list ...";
+                
+            Console.Clear();
+            Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+            Console.Write(loadingString);
             
             wrongPosition = false;
             shouldRender = true;
@@ -57,7 +64,14 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         private void OnShipListReceived(string[] message) {
+            _ships = new Ship[message.Length];
             
+            for (int i = 0; i < message.Length; i++) {
+                _ships[i] = Ship.FromString(message[i]);
+            }
+            
+            shouldRender = true;
+            ships.Add(_ships[0].Instantiate(new Vector2(5, 5)));
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
@@ -76,8 +90,8 @@ namespace Ships_Client.GameFlow.Scenes {
             if (key.Key == ConsoleKey.R)
                 ships[ships.Count - 1].Rotate();
             if (key.Key == ConsoleKey.Enter && !wrongPosition) {
-                if (ships.Count < Ship.defaultInventory.Length)
-                    ships.Add(Ship.defaultShips[Ship.defaultInventory[ships.Count]].Instantiate(new Vector2(5, 5)));
+                if (ships.Count < _ships.Length)
+                    ships.Add(_ships[ships.Count].Instantiate(new Vector2(5, 5)));
                 else {
                     GameState.yourShips = ships;
                     GameState.yourHits = new List<Hit>();
