@@ -18,25 +18,30 @@ namespace SocketLib {
         
         protected Socket socket;
         protected Task listenTask;
-        protected bool running = false;
+        protected bool running;
         
+        public bool debugEnabled { get; protected set; }
+        protected StreamWriter debugFile;
+
         public Client(Socket socket) {
             this.socket = socket;
             socket.ReceiveTimeout = 1000;
-            this.running = true;
-            this.listenTask = new Task(() => {
+            running = true;
+            listenTask = new Task(() => {
                 Byte[] received = new Byte[256];
-                int bytes = 0;
                 string message = "";
                 
                 while (running) {
                     if (socket.Available > 0) {
-                        bytes = socket.Receive(received, received.Length, 0);
+                        int bytes = socket.Receive(received, received.Length, 0);
                         message += Encoding.ASCII.GetString(received, 0, bytes);
 
                         if (message.Length != 0) {
                             if (OnMessage != null) OnMessage(message);
 
+                            if (debugEnabled)
+                                debugFile.WriteLine(DateTime.Now.ToShortTimeString() + " -- RECEIVED -- " + message);
+                            
                             message = "";
                             received = new Byte[256];
                         }
@@ -47,25 +52,38 @@ namespace SocketLib {
                     }
                 }
             });
-            this.listenTask.Start();
+            listenTask.Start();
+        }
+
+        public void enableDebug() {
+            debugEnabled = true;
+            debugFile = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "/log.txt");
+        }
+
+        public void disableDebug() {
+            debugEnabled = false;
+            debugFile.Close();
         }
 
         public int send(Byte[] message) {
-            return this.socket.Send(message);
+            if (debugEnabled)
+                debugFile.WriteLine(DateTime.Now.ToLongTimeString() + " -- SENT -- " + Encoding.ASCII.GetString(message));
+            return socket.Send(message);
         }
 
         public void close() {
-            this.socket.Close();
+            socket.Close();
+            debugFile.Close();
         }
 
 
         public void Dispose() {
-            this.close();
-            this.socket.Dispose();
-            this.listenTask.Dispose();
-            this.OnMessage = null;
-            this.OnDisconnect = null;
+            close();
+            socket.Dispose();
+            listenTask.Dispose();
+            debugFile.Close();
+            OnMessage = null;
+            OnDisconnect = null;
         }
     }
-    
 }
