@@ -26,7 +26,7 @@ namespace Ships_Client.GameFlow.Scenes {
         private int selected;
 
         private void OnRoomListReceived(string[] packet) {
-            for (int i = 1; i < packet.Length; i++) {
+            for (int i = 0; i < packet.Length; i++) {
                 string[] room = packet[i].Split('$');
                 rooms.Add(new Room(room[1], room[0], Boolean.Parse(room[2])));
             }

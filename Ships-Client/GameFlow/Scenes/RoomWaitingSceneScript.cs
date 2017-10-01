@@ -42,10 +42,24 @@ namespace Ships_Client.GameFlow.Scenes {
         private void OnOpponentJoined(string[] packet) {
             counter = 0;
             index = 0;
+            
+            string loadingString = "Opponent connected";
+
+            RoomState.connected = true;
+            showLoader = false;
                 
+            Console.Clear();
+            Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+            Console.Write(loadingString);
+        }
+
+        private void OnJoin(string[] packet) {
+            counter = 0;
+            index = 0;
+            
             string loadingString;
                 
-            if (packet[1] == "True") {
+            if (packet[0] == "True") {
                 RoomState.connected = true;
                 showLoader = false;
                 loadingString = "Succesfully connected";
@@ -58,22 +72,11 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
         }
-
-        private void OnJoin(string[] packet) {
-            counter = 0;
-            index = 0;
-                
-            string loadingString = "Opponent connected";
-
-            RoomState.connected = true;
-            showLoader = false;
-                
-            Console.Clear();
-            Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
-            Console.Write(loadingString);            
-        }
         
         public void Start() {
+            counter = 0;
+            index = 0;
+            
             string loadingString;
             
             if (RoomState.isHost)
