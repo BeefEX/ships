@@ -7,6 +7,33 @@ namespace Ships_Client {
 	
 	public static class Renderer {
 		
+		public static char[][,] loadingCircle = {
+			new [,] {
+				{'\\', '_', '/'}, {' ', ' ', ' '}, {' ', ' ', ' '}
+			},
+			new [,] {
+				{'\\', '_', ' '},  {'|', ' ', ' '},  {' ', ' ', ' '}
+			},
+			new [,] {
+				{'\\', ' ', ' '},  {'|', ' ', ' '},  {'/', ' ', ' '}
+			},
+			new [,] {
+				{' ', ' ', ' '},  {'|', ' ', ' '},  {'/', '=', ' '}
+			},
+			new [,] {
+				{' ', ' ', ' '},  {' ', ' ', ' '},  {'/', '=', '\\'}
+			},
+			new [,] {
+				{' ', ' ', ' '},  {' ', ' ', '|'},  {' ', '=', '\\'}
+			},
+			new [,] {
+				{' ', ' ', '/'},  {' ', ' ', '|'},  {' ', ' ', '\\'}
+			},
+			new [,] {
+				{' ', '_', '/'},  {' ', ' ', '|'},  {' ', ' ', ' '}
+			}
+		};
+		
 		public static void renderShip (Ship ship, Vector2 offset = new Vector2()) {
 			if (ship == default(Ship))
 				return;

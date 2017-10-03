@@ -8,33 +8,6 @@ namespace Ships_Client.GameFlow.Scenes {
     
     public class RoomWaitingSceneScript : IScript {
 
-        private char[][,] loadingCircle = {
-            new [,] {
-                {'\\', '_', '/'}, {' ', ' ', ' '}, {' ', ' ', ' '}
-            },
-            new [,] {
-                {'\\', '_', ' '},  {'|', ' ', ' '},  {' ', ' ', ' '}
-            },
-            new [,] {
-                {'\\', ' ', ' '},  {'|', ' ', ' '},  {'/', ' ', ' '}
-            },
-            new [,] {
-                {' ', ' ', ' '},  {'|', ' ', ' '},  {'/', '=', ' '}
-            },
-            new [,] {
-                {' ', ' ', ' '},  {' ', ' ', ' '},  {'/', '=', '\\'}
-            },
-            new [,] {
-                {' ', ' ', ' '},  {' ', ' ', '|'},  {' ', '=', '\\'}
-            },
-            new [,] {
-                {' ', ' ', '/'},  {' ', ' ', '|'},  {' ', ' ', '\\'}
-            },
-            new [,] {
-                {' ', '_', '/'},  {' ', ' ', '|'},  {' ', ' ', ' '}
-            }
-        };
-
         private bool showLoader = true;
         private int index;
         private int counter;
@@ -105,11 +78,11 @@ namespace Ships_Client.GameFlow.Scenes {
             
             if (counter == 0) {
                 index++;
-                index = index % loadingCircle.Length;
+                index = index % Renderer.loadingCircle.Length;
 
                 if (showLoader)
                     Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4),
-                        loadingCircle[index]);
+                        Renderer.loadingCircle[index]);
                 else if (index == 0) {
                     if (RoomState.connected)
                         Program.game.SwitchScene("ShipPlacementScene");
