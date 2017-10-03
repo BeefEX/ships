@@ -28,13 +28,15 @@ namespace SocketLib {
             socket.ReceiveTimeout = 1000;
             running = true;
             listenTask = new Task(() => {
-                Byte[] received = new Byte[256];
+                Byte[] received = new Byte[512];
                 string message = "";
                 
                 while (running) {
                     if (socket.Available > 0) {
-                        int bytes = socket.Receive(received, received.Length, 0);
-                        message += Encoding.ASCII.GetString(received, 0, bytes);
+                        while (socket.Available > 0) {
+                            int bytes = socket.Receive(received, received.Length, 0);
+                            message += Encoding.ASCII.GetString(received, 0, bytes);
+                        }
 
                         if (message.Length != 0) {
                             if (OnMessage != null) OnMessage(message);
