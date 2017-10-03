@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ships_Client.States;
 using Ships_Common;
+using Ships_Common.Net;
 
 namespace Ships_Client.GameFlow.Scenes {
     public class GameSceneScript : IScript {
@@ -8,6 +10,15 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool shouldRender;
         
         public void Start() {
+            
+            List<string> ships = new List<string>();
+            
+            for (int i = 0; i < GameState.yourShips.Count; i++) {
+                ships.Add(GameState.yourShips[i].Instantiate(new Vector2()).ToString());
+            }
+            
+            ConnectionState.Send(PacketUtils.constructPacket(Packets.SUBMIT_SHIP_POSITIONS.ToString(), ships.ToArray()));
+            
             shouldRender = true;
         }
 
