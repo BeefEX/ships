@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Ships_Client.Rendering;
 using Ships_Client.States;
 using Ships_Common;
 using Ships_Common.Net;
@@ -8,18 +9,15 @@ namespace Ships_Client.GameFlow.Scenes {
     
     public class RoomWaitingSceneScript : IScript {
 
-        private bool showLoader = true;
-        private int index;
-        private int counter;
+        private Loader loader;
 
         private void OnOpponentJoined(string[] packet) {
-            counter = 0;
-            index = 0;
+            loader.Reset();
             
             string loadingString = "Opponent connected";
 
             RoomState.connected = true;
-            showLoader = false;
+            loader.showLoader = false;
                 
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
@@ -27,19 +25,17 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         private void OnJoin(string[] packet) {
-            counter = 0;
-            index = 0;
+            loader.Reset();
             
             string loadingString;
                 
             if (packet[0] == "True") {
                 RoomState.connected = true;
-                showLoader = false;
                 loadingString = "Succesfully connected";
             } else {
-                showLoader = false;
                 loadingString = "Failed to connect (maybe wrong password)";
             }
+            loader.showLoader = false;
                 
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
@@ -47,8 +43,8 @@ namespace Ships_Client.GameFlow.Scenes {
         }
         
         public void Start() {
-            counter = 0;
-            index = 0;
+            loader = new Loader(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4));
+            loader.OnLoaderFinish += OnLoaderFinish;
             
             string loadingString;
             
@@ -70,30 +66,21 @@ namespace Ships_Client.GameFlow.Scenes {
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.JOIN_ROOM, OnJoin));
         }
 
-        public void Unload() { }
+        public void Unload() {
+            loader.OnLoaderFinish -= OnLoaderFinish;
+        }
 
         public void Update() {
-            counter++;
-            counter = counter % 9;
-            
-            if (counter == 0) {
-                index++;
-                index = index % Renderer.loadingCircle.Length;
-
-                if (showLoader)
-                    Renderer.drawPatternAsPixel(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4),
-                        Renderer.loadingCircle[index]);
-                else if (index == 0) {
-                    if (RoomState.connected)
-                        Program.game.SwitchScene("ShipPlacementScene");
-                    else
-                        Program.game.SwitchScene("MainMenu");
-                }
-            }
+            loader.Render();
         }
 
-        public void KeyPressed(ConsoleKeyInfo key) {
-            
+        public void OnLoaderFinish() {
+            if (RoomState.connected && !loader.showLoader)
+                Program.game.SwitchScene("ShipPlacementScene");
+            else if (!loader.showLoader)
+                Program.game.SwitchScene("MainMenu");
         }
+        
+        public void KeyPressed(ConsoleKeyInfo key) { }
     }
 }
