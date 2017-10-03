@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using Ships_Common;
 
 namespace Ships_Client {
