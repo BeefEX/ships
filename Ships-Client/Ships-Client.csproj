@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameFlow\IScript.cs" />
     <Compile Include="GameFlow\Scene.cs" />
+    <Compile Include="Rendering\Loader.cs" />
     <Compile Include="Rendering\Menu.cs" />
     <Compile Include="Rendering\Renderer.cs" />
     <Compile Include="States\ConnectionState.cs" />
