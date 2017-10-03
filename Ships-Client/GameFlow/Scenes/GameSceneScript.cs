@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ships_Client.Rendering;
 using Ships_Client.States;
 using Ships_Common;
 using Ships_Common.Net;
@@ -7,9 +8,12 @@ using Ships_Common.Net;
 namespace Ships_Client.GameFlow.Scenes {
     public class GameSceneScript : IScript {
 
+        private bool waiting;
         private bool shouldRender;
+        private Loader loader;
         
         public void Start() {
+            loader = new Loader(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4));
             
             List<string> ships = new List<string>();
             
@@ -17,20 +21,24 @@ namespace Ships_Client.GameFlow.Scenes {
                 ships.Add(GameState.yourShips[i].Instantiate(new Vector2()).ToString());
             }
             
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_JOINED, OnOpponentJoin));
             ConnectionState.Send(PacketUtils.constructPacket(Packets.SUBMIT_SHIP_POSITIONS.ToString(), ships.ToArray()));
+
+            string loadingString = "Succesfully connected";
+                
+            Console.Clear();
+            Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+            Console.Write(loadingString);
             
+            waiting = true;
             shouldRender = true;
         }
 
-        public void Unload() {
-            shouldRender = true;
+        private void RenderWait() {
+            loader.Render();
         }
 
-        public void Update() {
-            if (!shouldRender)
-                return;
-            shouldRender = false;
-
+        private void RenderGame() {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             
@@ -60,9 +68,28 @@ namespace Ships_Client.GameFlow.Scenes {
                 Renderer.renderShip(GameState.yourShips[i], new Vector2(20));
             }
         }
+        
+        public void Unload() {
+            shouldRender = true;
+        }
+
+        public void Update() {
+            if (!shouldRender)
+                return;
+            shouldRender = false;
+
+            if (waiting)
+                RenderWait();
+            else
+                RenderGame();
+        }
 
         public void KeyPressed(ConsoleKeyInfo key) {
             
+        }
+
+        private void OnOpponentJoin(string[] message) {
+            waiting = false;
         }
     }
 }
