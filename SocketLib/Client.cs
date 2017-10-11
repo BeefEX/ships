@@ -51,6 +51,7 @@ namespace SocketLib {
 
                     if (!socket.IsConnected()) {
                         if (OnDisconnect != null) OnDisconnect();
+                        running = false;
                     }
                 }
             });
