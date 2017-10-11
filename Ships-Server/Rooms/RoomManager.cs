@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SocketLib;
 
 namespace Ships_Server.Rooms {
     
@@ -10,12 +9,15 @@ namespace Ships_Server.Rooms {
         public readonly Dictionary<string, Room> rooms;
 
         public RoomManager() {
-            this.rooms = new Dictionary<string, Room>();
+            rooms = new Dictionary<string, Room>();
             id = 0;
         }
 
         public void createRoom(string name, string password, Client host) {
-            rooms.Add(id.ToString(), new Room(id, host, name, password));
+            Room room = new Room(id, host, name, password);
+            rooms.Add(id.ToString(), room);
+            host.room = room;
+            host.isHost = true;
             id++;
         }
 

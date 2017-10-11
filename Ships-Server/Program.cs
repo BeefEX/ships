@@ -7,6 +7,7 @@ using Ships_Common.Net;
 using Ships_Server.Handlers;
 using Ships_Server.Rooms;
 using SocketLib;
+using Client = Ships_Server.Rooms.Client;
 
 namespace Ships_Server {
     
@@ -67,13 +68,14 @@ namespace Ships_Server {
                 
                 client.send(Encoding.ASCII.GetBytes("ig~00000000"));
                 Console.WriteLine("Client connected");
+                Client _client = new Client(client, null, false);
                 
                 client.OnMessage += message => {
                     string[] packet = PacketUtils.readPacket(Encoding.ASCII.GetBytes(message));
                     
                     Console.WriteLine("Received => " + message);
                     
-                    eventSystem.Invoke(packet[0], new Packet<string[]>(rooms, client, packet.Skip(1).Take(packet.Length - 1).ToArray()));
+                    eventSystem.Invoke(packet[0], new Packet<string[]>(rooms, _client, packet.Skip(1).Take(packet.Length - 1).ToArray()));
                 };
             };
             server.OnClientDisconnect += client => Console.WriteLine("Client disconnect");

@@ -1,5 +1,4 @@
 ﻿using Ships_Common.Net;
-using SocketLib;
 
 namespace Ships_Server.Rooms {
     
@@ -11,9 +10,9 @@ namespace Ships_Server.Rooms {
         public string name { get; protected set; }
         public string password { get; protected set; }
 
-        protected Client host;
-        protected Client client;
-        protected Game game;
+        public Client host { get; protected set; }
+        public Client client { get; protected set; }
+        public Game game { get; protected set; }
 
         public Room(int id, Client host, string name, string password) {
             open = true;
@@ -22,7 +21,7 @@ namespace Ships_Server.Rooms {
             this.name = name;
             this.password = password;
 
-            host.OnDisconnect += OnHostDisconnect;
+            host.client.OnDisconnect += OnHostDisconnect;
         }
 
         public bool Authenticate(string _password) {
@@ -31,9 +30,14 @@ namespace Ships_Server.Rooms {
 
         public void addClient(Client _client) {
             client = _client;
+            
             host.send(PacketUtils.constructPacket(Packets.OPPONENT_JOINED.ToString(), ""));
-            _client.OnDisconnect += OnOpponentDisconnect;
+            _client.client.OnDisconnect += OnOpponentDisconnect;
+            
             open = false;
+            
+            _client.room = this;
+            _client.isHost = false;
         }
 
         public override string ToString() {
