@@ -21,11 +21,12 @@ namespace Ships_Client.GameFlow.Scenes {
                 ships.Add(GameState.yourShips[i].Instantiate(new Vector2()).ToString());
             }
             
-            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_JOINED, OnOpponentJoin));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_READY, OnOpponentJoin));
             ConnectionState.Send(PacketUtils.constructPacket(Packets.SUBMIT_SHIP_POSITIONS.ToString(), ships.ToArray()));
 
-            string loadingString = "Succesfully connected";
-                
+            string loadingString = "Waiting for the opponent to place ships";
+            
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
@@ -74,14 +75,15 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         public void Update() {
-            if (!shouldRender)
-                return;
-            shouldRender = false;
-
             if (waiting)
                 RenderWait();
-            else
+            else {
+                if (!shouldRender)
+                    return;
+                shouldRender = false;
+                
                 RenderGame();
+            }
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
@@ -90,6 +92,7 @@ namespace Ships_Client.GameFlow.Scenes {
 
         private void OnOpponentJoin(string[] message) {
             waiting = false;
+            shouldRender = true;
         }
     }
 }

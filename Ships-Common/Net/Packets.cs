@@ -4,6 +4,7 @@
         JOIN_ROOM,
         OPPONENT_JOINED,
         OPPONENT_DISCONNECTED,
+        OPPONENT_READY,
         ROOM_LIST,
         
         SHIP_LIST,

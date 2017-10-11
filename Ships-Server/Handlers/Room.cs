@@ -17,7 +17,7 @@ namespace Ships_Server.Handlers {
         }
         
         private static void receiveShipPlacement(Packet<string[]> packet) {
-            
+            packet.client.getOpponent().send(PacketUtils.constructPacket(Packets.OPPONENT_READY.ToString()));
         }
 
         public static void Init() {
