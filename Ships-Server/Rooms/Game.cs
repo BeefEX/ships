@@ -8,6 +8,10 @@ namespace Ships_Server.Rooms {
         public Room room;
         public List<Ship> playerOneShips;
         public List<Ship> playerTwoShips;
+        public int totalHitsToWinP1;
+        public int totalHitsToWinP2;
+        public int playerOneHits;
+        public int playerTwoHits;
 
         public Game(Room room) {
             this.room = room;

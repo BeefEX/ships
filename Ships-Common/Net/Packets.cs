@@ -12,7 +12,10 @@
         
         SUBMIT_HIT,
         HIT_ANSWER,
-        OPPONENT_HIT
+        OPPONENT_HIT,
+        
+        YOU_WON,
+        YOU_LOST
         
     }
 }

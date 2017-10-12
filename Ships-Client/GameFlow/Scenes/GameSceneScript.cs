@@ -17,6 +17,8 @@ namespace Ships_Client.GameFlow.Scenes {
         public void Start() {
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_READY, OnOpponentJoin));
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.HIT_ANSWER, OnHitProcessed));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.YOU_WON, OnWin));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.YOU_LOST, OnLoss));
             
             cursor = new Vector2(5, 5);
             loader = new Loader(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4));
@@ -127,6 +129,16 @@ namespace Ships_Client.GameFlow.Scenes {
 
         private void OnHitProcessed(string[] message) {
             GameState.yourHits.Add(Hit.FromString(message[0]));
+        }
+
+        private void OnWin(string[] message) {
+            RoomState.won = true;
+            Program.game.SwitchScene("EndGameScene");
+        }
+
+        private void OnLoss(string[] message) {
+            RoomState.won = false;
+            Program.game.SwitchScene("EndGameScene");
         }
     }
 }

@@ -22,8 +22,15 @@ namespace Ships_Server.Handlers {
         private static void receiveShipPlacement(Packet<string[]> packet) {
             List<Ship> ships = new List<Ship>();
 
-            for (int i = 1; i < packet.data.Length; i++) {
+            for (int i = 0; i < packet.data.Length; i++) {
                 ships.Add(Ship.FromString(packet.data[i]));
+            }
+            
+            foreach (Ship ship in ships) {
+                if (packet.client.isHost)
+                    packet.client.room.game.totalHitsToWinP2 += ship.shape.Length;
+                else
+                    packet.client.room.game.totalHitsToWinP1 += ship.shape.Length;
             }
 
             if (packet.client.isHost)
@@ -47,11 +54,30 @@ namespace Ships_Server.Handlers {
             bool success = false;
             
             foreach (Ship ship in ships) {
-                if (ship.checkShape(pos))
+                if (ship.checkShape(pos)) {
                     success = true;
+                    if (packet.client.isHost)
+                        packet.client.room.game.playerOneHits++;
+                    else
+                        packet.client.room.game.playerTwoHits++;
+                }
             }
 
             packet.client.send(PacketUtils.constructPacket(Packets.HIT_ANSWER.ToString(), new Hit(pos, success).ToString()));
+            
+            
+            Console.WriteLine(packet.client.room.game.playerOneHits + "/" + packet.client.room.game.totalHitsToWinP1 + " -- " + packet.client.room.game.playerTwoHits + "/" + packet.client.room.game.totalHitsToWinP2);
+            
+            if (packet.client.room.game.playerOneHits >= packet.client.room.game.totalHitsToWinP1) {
+                
+                packet.client.room.host.send(PacketUtils.constructPacket(Packets.YOU_WON.ToString()));
+                packet.client.room.client.send(PacketUtils.constructPacket(Packets.YOU_LOST.ToString()));
+                
+            } else if (packet.client.room.game.playerTwoHits >= packet.client.room.game.totalHitsToWinP2) {
+                
+                packet.client.room.host.send(PacketUtils.constructPacket(Packets.YOU_LOST.ToString()));
+                packet.client.room.client.send(PacketUtils.constructPacket(Packets.YOU_WON.ToString()));
+            }
         }
 
         public static void Init() {

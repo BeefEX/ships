@@ -9,5 +9,7 @@
         public static string roomID;
         public static string roomName;
         public static string roomPassword;
+
+        public static bool won = false;
     }
 }

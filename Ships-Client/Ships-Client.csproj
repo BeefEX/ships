@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="GameFlow\Scenes\EndGameSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\ExitSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\GameSceneScript.cs" />
     <Compile Include="GameFlow\Scenes\MainMenuScript.cs" />
