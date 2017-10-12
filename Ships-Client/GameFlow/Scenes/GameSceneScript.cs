@@ -12,18 +12,21 @@ namespace Ships_Client.GameFlow.Scenes {
         private bool shouldRender;
         private Loader loader;
         
+        private Vector2 cursor;
+        
         public void Start() {
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_READY, OnOpponentJoin));
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.HIT_ANSWER, OnHitProcessed));
+            
+            cursor = new Vector2(5, 5);
             loader = new Loader(new Vector2(Console.WindowWidth / 2f, Console.WindowHeight / 2f + 4));
             
             List<string> ships = new List<string>();
             
             for (int i = 0; i < GameState.yourShips.Count; i++) {
-                ships.Add(GameState.yourShips[i].Instantiate(new Vector2()).ToString());
+                ships.Add(GameState.yourShips[i].ToString());
             }
             
-            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_READY, OnOpponentJoin));
-            ConnectionState.Send(PacketUtils.constructPacket(Packets.SUBMIT_SHIP_POSITIONS.ToString(), ships.ToArray()));
-
             string loadingString = "Waiting for the opponent to place ships";
             
             Console.ForegroundColor = ConsoleColor.White;
@@ -33,6 +36,7 @@ namespace Ships_Client.GameFlow.Scenes {
             
             waiting = true;
             shouldRender = true;
+            ConnectionState.Send(PacketUtils.constructPacket(Packets.SUBMIT_SHIP_POSITIONS.ToString(), ships.ToArray()));
         }
 
         private void RenderWait() {
@@ -63,11 +67,16 @@ namespace Ships_Client.GameFlow.Scenes {
                 Console.Write((char) (65 + i));
             }
             
-            for (int i = 0; i < GameState.yourShips.Count; i++) {
-                Console.ForegroundColor = ConsoleColor.White;
+            foreach (Hit hit in GameState.yourHits) {
+                Console.ForegroundColor = hit.succesful ? ConsoleColor.Red : ConsoleColor.Blue;
                 
-                Renderer.renderShip(GameState.yourShips[i], new Vector2(20));
+                Console.SetCursorPosition((int) hit.location.x + 20, (int) hit.location.y);
+                Console.Write('X');
             }
+            
+            Console.SetCursorPosition((int) cursor.x + 20, (int) cursor.y);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write('O');
         }
         
         public void Unload() {
@@ -87,12 +96,37 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         public void KeyPressed(ConsoleKeyInfo key) {
+            shouldRender = true;
+
+            Vector2 delta = new Vector2();
+
+            if (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.S)
+                delta.y += 1;
+            if (key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.W)
+                delta.y -= 1;
+            if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.D)
+                delta.x += 1;
+            if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
+                delta.x -= 1;
+            if (key.Key == ConsoleKey.Enter) {
+                ConnectionState.Send(PacketUtils.constructPacket(Packets.SUBMIT_HIT.ToString(), cursor.ToString()));
+            }
             
+            Vector2 tmp = cursor + delta;
+                
+            if (tmp.x < 1 || tmp.x > 10 || tmp.y < 1 || tmp.y > 10)
+                delta = new Vector2();
+
+            cursor += delta;
         }
 
         private void OnOpponentJoin(string[] message) {
             waiting = false;
             shouldRender = true;
+        }
+
+        private void OnHitProcessed(string[] message) {
+            GameState.yourHits.Add(Hit.FromString(message[0]));
         }
     }
 }

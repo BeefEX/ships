@@ -20,6 +20,7 @@ namespace Ships_Server.Rooms {
             this.host = host;
             this.name = name;
             this.password = password;
+            game = new Game(this);
 
             host.client.OnDisconnect += OnHostDisconnect;
         }

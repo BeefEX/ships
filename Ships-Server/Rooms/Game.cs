@@ -5,9 +5,9 @@ namespace Ships_Server.Rooms {
     
     public class Game {
 
-        private Room room;
-        private List<Ship> playerOneShips;
-        private List<Ship> playerTwoShips;
+        public Room room;
+        public List<Ship> playerOneShips;
+        public List<Ship> playerTwoShips;
 
         public Game(Room room) {
             this.room = room;
