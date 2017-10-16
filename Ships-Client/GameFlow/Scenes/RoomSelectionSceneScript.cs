@@ -8,8 +8,7 @@ namespace Ships_Client.GameFlow.Scenes {
     public class RoomSelectionSceneScript : IScript {
 
         private Menu menu;
-
-        private bool connected;
+        
         private int counter = 60;
         
         private static List<MenuOption> options = new List<MenuOption> {
@@ -23,9 +22,8 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
             try {
-                if (ConnectionState.client)
-                ConnectionState.Init();
-                connected = true;
+                if (!ConnectionState.connected)
+                    ConnectionState.Init();
             } catch (SocketException e) {
                 loadingString = "Connection failed.";
                 Console.Clear();
@@ -41,7 +39,7 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         public void Update() {
-            if (connected)
+            if (ConnectionState.connected)
                 menu.Render();
             else {
                 counter--;

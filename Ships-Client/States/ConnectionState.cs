@@ -13,12 +13,13 @@ namespace Ships_Client.States {
         public static Client client { get; private set; }
 
         public static EventSystem<string[]> OnMessage;
-        
-        //TODO: Add disconnect handeling.
+
+        public static bool connected = false;
 
         public static void Init() {
             OnMessage = new EventSystem<string[]>();
             client = new Client(new TcpClient("localhost", 8080).Client);
+            connected = true;
             Send(Encoding.ASCII.GetBytes("ig~00000000"));
             
             client.OnMessage += message => {
@@ -29,11 +30,14 @@ namespace Ships_Client.States {
             client.OnDisconnect += () => {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.White;
-                    
+
+                connected = false;
+                
                 string loadingString = "You have been disconnected from the server.";
                 Console.Clear();
                 Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
                 Console.Write(loadingString);
+                Environment.Exit(1);
             };
         }
 
