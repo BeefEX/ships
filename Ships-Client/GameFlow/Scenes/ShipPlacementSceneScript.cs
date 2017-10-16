@@ -21,6 +21,7 @@ namespace Ships_Client.GameFlow.Scenes {
         public void Start() {
             ships = new List<Ship>();
             
+            ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.OPPONENT_DISCONNECTED, OnOpponentDisconnected));
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.SHIP_LIST, OnShipListReceived));
             ConnectionState.Send(Encoding.ASCII.GetBytes(Packets.SHIP_LIST.ToString()));
             
@@ -61,6 +62,11 @@ namespace Ships_Client.GameFlow.Scenes {
                 
                 Renderer.renderShip(ships[i]);
             }
+        }
+
+        private void OnOpponentDisconnected(string[] message) {
+            RoomState.finished = false;
+            Program.game.SwitchScene("EndGameScene");
         }
 
         private void OnShipListReceived(string[] message) {

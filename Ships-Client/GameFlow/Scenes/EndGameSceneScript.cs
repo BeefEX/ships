@@ -9,7 +9,7 @@ namespace Ships_Client.GameFlow.Scenes {
         
         public void Start() {
             counter = 0;
-            string loadingString = RoomState.won ? "You won!" : "You lost!";
+            string loadingString = RoomState.finished? RoomState.won ? "You won!" : "You lost!": "Your opponent left!";
 
             RoomState.connected = false;
             
@@ -18,8 +18,6 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
-            
-            ConnectionState.Close();
         }
 
         public void Unload() { }
@@ -27,7 +25,7 @@ namespace Ships_Client.GameFlow.Scenes {
         public void Update() {
             counter++;
             if (counter > 60)
-                Program.game.SwitchScene("MainMenu");
+                Program.game.SwitchScene("RoomSelectionScene");
         }
 
         public void KeyPressed(ConsoleKeyInfo key) { }

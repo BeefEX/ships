@@ -23,6 +23,7 @@ namespace Ships_Client.GameFlow.Scenes {
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
             try {
+                if (ConnectionState.client)
                 ConnectionState.Init();
                 connected = true;
             } catch (SocketException e) {

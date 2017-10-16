@@ -132,11 +132,13 @@ namespace Ships_Client.GameFlow.Scenes {
         }
 
         private void OnWin(string[] message) {
+            RoomState.finished = true;
             RoomState.won = true;
             Program.game.SwitchScene("EndGameScene");
         }
 
         private void OnLoss(string[] message) {
+            RoomState.finished = true;
             RoomState.won = false;
             Program.game.SwitchScene("EndGameScene");
         }

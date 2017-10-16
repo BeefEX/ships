@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SocketLib {
     
-    public class Client : IDisposable {
+    public class Client {
 
         public delegate void OnDisconnectHandler();
 
@@ -48,9 +48,9 @@ namespace SocketLib {
                             running = false;
                         }
                     }
-                    
+
                     if (OnDisconnect != null) OnDisconnect();
-                } catch (Exception e) {
+                } catch (ObjectDisposedException ignored) { } catch (Exception e) {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Clear();
                     Console.SetCursorPosition(0, 0);
@@ -69,17 +69,6 @@ namespace SocketLib {
 
         public void close() {
             socket.Close();
-        }
-
-
-        public void Dispose() {
-            close();
-            socket.Dispose();
-            OnMessage = null;
-            OnDisconnect = null;
-            
-            //TODO: Add task disposal, uncomennting this right now will crash the game (both client and server);
-            // listenTask.Dispose();
         }
     }
 }

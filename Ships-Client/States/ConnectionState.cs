@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using Ships_Common;
@@ -23,6 +24,16 @@ namespace Ships_Client.States {
             client.OnMessage += message => {
                 string[] split = message.Split('~');
                 OnMessage.Invoke(split[0], split.Skip(1).Take(split.Length - 1).ToArray());
+            };
+
+            client.OnDisconnect += () => {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.White;
+                    
+                string loadingString = "You have been disconnected from the server.";
+                Console.Clear();
+                Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
+                Console.Write(loadingString);
             };
         }
 

@@ -11,5 +11,6 @@
         public static string roomPassword;
 
         public static bool won = false;
+        public static bool finished = false;
     }
 }

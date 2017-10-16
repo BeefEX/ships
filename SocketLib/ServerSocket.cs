@@ -37,7 +37,6 @@ namespace SocketLib {
                     client.OnDisconnect += () => {
                         if (OnClientDisconnect != null) OnClientDisconnect(client);
                         clients.Remove(client);
-                        client.Dispose();
                     };
                 }
             });
