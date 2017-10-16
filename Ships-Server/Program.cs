@@ -46,16 +46,6 @@ namespace Ships_Server {
                         return;
                     }
 
-                    if (command[0] == "netDebug") {
-                        server.clients.ForEach(client => {
-                            bool enable = bool.Parse(command[1]);
-                            if (enable && !client.debugEnabled)
-                                client.enableDebug();
-                            else if (!enable && client.debugEnabled)
-                                client.disableDebug();
-                        });
-                    }
-
                     if (command[0] == "listRooms") {
                         foreach (Rooms.Room room in rooms.rooms.Values) {
                             Console.WriteLine(room.id + "\t-\t" + room.name + "\tIs open: " + room.open);

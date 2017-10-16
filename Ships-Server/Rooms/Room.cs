@@ -1,4 +1,5 @@
-﻿using Ships_Common.Net;
+﻿using System;
+using Ships_Common.Net;
 
 namespace Ships_Server.Rooms {
     
@@ -48,12 +49,14 @@ namespace Ships_Server.Rooms {
         private void OnHostDisconnect() {
             if (client != null)
                 client.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
+            Console.WriteLine("test - host");
             Program.rooms.removeRoom(this);
         }
         
         private void OnOpponentDisconnect() {
-            host.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
+            Console.WriteLine("test - client");
             Program.rooms.removeRoom(this);
+            host.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
         }
     }
 }
