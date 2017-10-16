@@ -26,7 +26,7 @@ namespace Ships_Server {
     internal class Program {
         
         private static ServerSocket server;
-        private static RoomManager rooms;
+        public static RoomManager rooms;
         public static EventSystem<Packet<string[]>> eventSystem;
         
         public static void Main(string[] args) {
@@ -55,9 +55,12 @@ namespace Ships_Server {
                                 client.disableDebug();
                         });
                     }
-                    
-                    if (command[0] == "shipSer")
-                        Console.WriteLine(Ship.defaultShips["SHIP_HUGE"].Instantiate(new Vector2(10, 10)));
+
+                    if (command[0] == "listRooms") {
+                        foreach (Rooms.Room room in rooms.rooms.Values) {
+                            Console.WriteLine(room.id + "\t-\t" + room.name + "\tIs open: " + room.open);
+                        }
+                    }
                 }
             }).Start();
             

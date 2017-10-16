@@ -48,10 +48,12 @@ namespace Ships_Server.Rooms {
         private void OnHostDisconnect() {
             if (client != null)
                 client.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
+            Program.rooms.removeRoom(this);
         }
         
         private void OnOpponentDisconnect() {
             host.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
+            Program.rooms.removeRoom(this);
         }
     }
 }

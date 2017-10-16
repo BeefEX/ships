@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Ships_Server.Rooms {
     
@@ -11,6 +12,10 @@ namespace Ships_Server.Rooms {
         public RoomManager() {
             rooms = new Dictionary<string, Room>();
             id = 0;
+        }
+
+        public void removeRoom(Room room) {
+            rooms.Remove(room.id.ToString());
         }
 
         public void createRoom(string name, string password, Client host) {
@@ -45,6 +50,10 @@ namespace Ships_Server.Rooms {
             }
             
             return openRooms.ToArray();
+        }
+
+        public Room[] getRooms() {
+            return rooms.Values.ToArray();
         }
     }
     
