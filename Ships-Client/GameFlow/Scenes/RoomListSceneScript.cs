@@ -37,6 +37,7 @@ namespace Ships_Client.GameFlow.Scenes {
             shouldRender = true;
             rooms = new List<Room>();
             selected = 0;
+            RoomState.isHost = false;
             
             ConnectionState.OnMessage.addTrigger(new PacketHandler(Packets.ROOM_LIST, OnRoomListReceived));
             ConnectionState.Send(PacketUtils.constructPacket(Packets.ROOM_LIST.ToString()));

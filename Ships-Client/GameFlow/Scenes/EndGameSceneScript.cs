@@ -9,14 +9,17 @@ namespace Ships_Client.GameFlow.Scenes {
         
         public void Start() {
             counter = 0;
-            string loadingString = "Opponent connected";
+            string loadingString = RoomState.won ? "You won!" : "You lost!";
 
             RoomState.connected = false;
-            ConnectionState.Close();
+            
+            Console.ForegroundColor = ConsoleColor.White;
             
             Console.Clear();
             Console.SetCursorPosition(Console.WindowWidth / 2 - loadingString.Length / 2, Console.WindowHeight / 2);
             Console.Write(loadingString);
+            
+            ConnectionState.Close();
         }
 
         public void Unload() { }

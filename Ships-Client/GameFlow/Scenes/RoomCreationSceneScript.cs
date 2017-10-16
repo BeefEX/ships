@@ -18,6 +18,7 @@ namespace Ships_Client.GameFlow.Scenes {
         };
         
         public void Start() {
+            RoomState.isHost = true;
             menu = new Menu(options);
         }
 
