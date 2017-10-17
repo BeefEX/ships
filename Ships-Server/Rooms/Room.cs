@@ -15,6 +15,8 @@ namespace Ships_Server.Rooms {
         public Client client { get; protected set; }
         public Game game { get; protected set; }
 
+        public bool hostsTurn = true;
+        
         public Room(int id, Client host, string name, string password) {
             open = true;
             this.id = id;
@@ -47,16 +49,23 @@ namespace Ships_Server.Rooms {
         }
 
         private void OnHostDisconnect() {
-            if (client != null)
-                client.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
+            client.client.OnDisconnect -= OnHostDisconnect;
+            if (!client.client.isConnected())
+                return;
+            client.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
             Console.WriteLine("test - host");
             Program.rooms.removeRoom(this);
+            host = null;
+            client = null;
         }
         
         private void OnOpponentDisconnect() {
             Console.WriteLine("test - client");
-            Program.rooms.removeRoom(this);
             host.send(PacketUtils.constructPacket(Packets.OPPONENT_DISCONNECTED.ToString(), ""));
+            host.client.OnDisconnect -= OnOpponentDisconnect;
+            Program.rooms.removeRoom(this);
+            host = null;
+            client = null;
         }
     }
 }

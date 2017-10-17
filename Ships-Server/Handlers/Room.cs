@@ -46,11 +46,20 @@ namespace Ships_Server.Handlers {
         }
 
         private static void receiveHitInformation(Packet<string[]> packet) {
+            if ((packet.client == packet.client.room.host && !packet.client.room.hostsTurn)
+                ||
+                (packet.client == packet.client.room.client && packet.client.room.hostsTurn)) {
+                packet.client.send(PacketUtils.constructPacket(Packets.HIT_ANSWER.ToString(), new Hit(new Vector2(), false).ToString()));
+                return;
+            }
+            
             Vector2 pos = Vector2.FromString(packet.data[0]);
             List<Ship> ships = packet.client.isHost
                 ? packet.client.room.game.playerTwoShips
                 : packet.client.room.game.playerOneShips;
 
+            packet.client.room.hostsTurn = !packet.client.room.hostsTurn;
+            
             bool success = false;
             
             foreach (Ship ship in ships) {

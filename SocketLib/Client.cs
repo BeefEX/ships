@@ -70,5 +70,9 @@ namespace SocketLib {
         public void close() {
             socket.Close();
         }
+
+        public bool isConnected() {
+            return socket.IsConnected();
+        } 
     }
 }
